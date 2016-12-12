@@ -4,7 +4,7 @@ from collections import namedtuple
 Translate = namedtuple('Translate', ['key', 'replacement'])
 
 TRANS = []
-
+LEN_INPUT = 506
 
 def load():
     with open('input.txt') as f:
@@ -32,29 +32,15 @@ def part1(s):
 
 
 min_depth = 9999
-
-def build_molecule(s='e', iteration=0):
-    global min_depth
-    if len(s) > 506 or iteration > min_depth:
-        return
-
-    if s == INPUT:
-        min_depth = min(iteration, min_depth)
-        print("new min_depth", iteration)
-        return iteration
-
-    for key, replacement in TRANS:
-        if key in s:
-            replaced = s.replace(key, replacement, 1)
-            build_molecule(replaced, iteration + 1)
+DEPTHS = {'e': 9999}
 
 
 def reverse_molecule(s, depth=0):
-    global min_path
-
-    print(depth, min_path, s)
-    if depth > min_path:
+    if s in DEPTHS and (depth >= DEPTHS[s] or depth >= DEPTHS['e']):
+        # repeat loop
         return False
+    else:
+        DEPTHS[s] = depth
 
     if s == 'e':
         return True
@@ -65,11 +51,10 @@ def reverse_molecule(s, depth=0):
             res = reverse_molecule(replaced, depth + 1)
             if res:
                 print("new min path", depth+1)
-                min_path = depth + 1
 
 
 def part2(s):
-    build_molecule()
+    reverse_molecule(s)
 
 
 if __name__ == "__main__":
@@ -79,3 +64,4 @@ if __name__ == "__main__":
     print(len(part1(INPUT)))
     print(len(INPUT))
     part2(INPUT)
+    print(DEPTHS['e'])
