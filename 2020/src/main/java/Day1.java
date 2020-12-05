@@ -26,7 +26,7 @@ public class Day1 {
                 .map(x -> Integer.parseInt(x))
                 .collect(Collectors.toCollection(HashSet::new));
 
-        for(Integer entry: entries) {
+        for (Integer entry : entries) {
             int complement = SUM - entry;
             if (entries.contains(complement)) {
 
@@ -50,8 +50,8 @@ public class Day1 {
                 .collect(Collectors.toCollection(HashSet::new));
 
         outer:
-        for(Integer entry1: entries) {
-            for(Integer entry2: entries) {
+        for (Integer entry1 : entries) {
+            for (Integer entry2 : entries) {
                 int complement = SUM - entry1 - entry2;
                 if (entries.contains(complement)) {
                     System.out.println(

@@ -6,8 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day2 {
-    private final List<String> lines;
     private final static Pattern pattern = Pattern.compile("(\\d+)-(\\d+) ([a-z]): ([a-z]+)");
+    private final List<String> lines;
 
     public Day2(String input) {
         lines = InputUtils.readFile(input);
