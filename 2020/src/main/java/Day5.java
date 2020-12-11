@@ -49,8 +49,8 @@ public class Day5 {
 }
 
 final class Seat {
-    private int row;
-    private int column;
+    private final int row;
+    private final int column;
 
     private Seat(int row, int column) {
         this.row = row;

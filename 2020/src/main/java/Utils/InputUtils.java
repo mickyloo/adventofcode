@@ -12,7 +12,7 @@ public class InputUtils {
         ArrayList<String> lines = new ArrayList<>();
 
         try (Scanner scan = new Scanner((is))) {
-            while(scan.hasNextLine()) {
+            while (scan.hasNextLine()) {
                 lines.add(scan.nextLine());
             }
         }
