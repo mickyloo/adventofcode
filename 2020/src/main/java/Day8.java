@@ -15,8 +15,8 @@ enum Operation {
 
 public class Day8 {
 
-    private GameConsole console;
     private final List<Pair<Operation, List<Integer>>> bootCode;
+    private GameConsole console;
 
     public Day8(String filename) {
         bootCode = InputUtils.readFile(filename)
