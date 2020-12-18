@@ -109,11 +109,11 @@ public class Day12 {
     private void part2() {
 
         class WaypointShip implements IShip {
+            final Action direction = Action.EAST;
             int x = 0;
             int y = 0;
             int waypoint_x = 10;
             int waypoint_y = 1;
-            final Action direction = Action.EAST;
 
             public void move(Action a, int distance) {
                 switch (a) {
