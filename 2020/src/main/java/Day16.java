@@ -1,6 +1,14 @@
 import Utils.InputUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -49,7 +57,8 @@ public class Day16 {
         int sum = nearby.stream()
                 .flatMap(Collection::stream)
                 .filter(x -> !allRules.test(x))
-                .collect(Collectors.summingInt(Integer::intValue));
+                .mapToInt(Integer::intValue)
+                .sum();
 
         System.out.println("Answer: " + sum);
     }
