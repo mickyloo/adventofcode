@@ -88,7 +88,7 @@ public class Day17 {
 }
 
 record P3(int x, int y, int z) implements Point {
-    static List<Integer> near = Collections.unmodifiableList(List.of(-1, 0, 1));
+    static List<Integer> near = List.of(-1, 0, 1);
 
     public List<Point> neighbors() {
         List<Point> neighbors = new ArrayList<>();
@@ -105,7 +105,7 @@ record P3(int x, int y, int z) implements Point {
 }
 
 record P4(int x, int y, int z, int w) implements Point {
-    static List<Integer> near = Collections.unmodifiableList(List.of(-1, 0, 1));
+    static List<Integer> near = List.of(-1, 0, 1);
 
     public List<Point> neighbors() {
         List<Point> neighbors = new ArrayList<>();
