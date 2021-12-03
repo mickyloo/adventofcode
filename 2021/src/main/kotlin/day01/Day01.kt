@@ -11,7 +11,7 @@ fun main() {
         .readLines()
         .windowed(2, 1)
         .map { it[1].toInt() > it[0].toInt() }
-        .count { it };
+        .count { it }
     println(count1)
 
     println("part2: ")
@@ -19,7 +19,7 @@ fun main() {
         .readLines()
         .asSequence()
         .windowed(3, 1)
-        .map { it -> it.sumOf { it.toInt() }}
+        .map { it -> it.sumOf { it.toInt() } }
         .windowed(2, 1)
         .map { it[1] > it[0] }
         .count { it }

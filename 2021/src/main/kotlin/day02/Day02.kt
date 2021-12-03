@@ -19,7 +19,7 @@ fun part1(commands: List<Pair<String, Int>>) {
     var depth = 0
 
     commands.forEach { command ->
-        when(command.first) {
+        when (command.first) {
             "forward" -> dist += command.second
             "down" -> depth += command.second
             "up" -> depth -= command.second
@@ -36,7 +36,7 @@ fun part2(commands: List<Pair<String, Int>>) {
     var aim = 0
 
     commands.forEach { command ->
-        when(command.first) {
+        when (command.first) {
             "forward" -> {
                 dist += command.second
                 depth += aim * command.second
