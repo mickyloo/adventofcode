@@ -28,7 +28,7 @@ fun part2(lines: List<String>) {
         }
         return report[0]
     }
-    
+
     val o2 = reduceReport(lines) { count, majority -> count >= majority }
     val co2 = reduceReport(lines) { count, majority -> count < majority }
     println(o2 * co2)
