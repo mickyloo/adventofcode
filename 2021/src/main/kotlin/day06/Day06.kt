@@ -19,7 +19,7 @@ fun main() {
 }
 
 class FishPool(private val initial: Map<Int, Long>) {
-    var pool: MutableMap<Int, Long> = initial.toMutableMap()
+    private val pool: MutableMap<Int, Long> = initial.toMutableMap()
     fun spawn(days: Int): Long {
         (0 until days).forEach { _ ->
             for (i in 0..NEW_SPAWN_DAYS) {
