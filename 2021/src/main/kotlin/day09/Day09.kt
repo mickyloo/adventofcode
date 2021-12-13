@@ -1,16 +1,20 @@
 package day09
 
 import java.io.File
+import kotlin.system.measureTimeMillis
 
 val lines = File("src/main/kotlin/day09/input.txt")
     .readLines()
     .map { line -> line.map { it.toString().toByte() } }
 
-val DIRECTIONS : List<Pair<Int, Int>> = listOf(-1 to 0, 1 to 0, 0 to -1, 0 to 1)
+val DIRECTIONS: List<Pair<Int, Int>> = listOf(-1 to 0, 1 to 0, 0 to -1, 0 to 1)
 
 fun main() {
-    part1()
-    part2()
+    val elapsed1 = measureTimeMillis { part1() }
+    val elapsed2 = measureTimeMillis { part2() }
+
+    println("Part1: Took $elapsed1 ms")
+    println("Part2: Took $elapsed2 ms")
 }
 
 fun part2() {
@@ -18,7 +22,7 @@ fun part2() {
         .map(Pair<Int, Int>::basinSize)
         .sortedDescending()
         .take(3)
-    print(basins[0] * basins[1] * basins[2])
+    println(basins[0] * basins[1] * basins[2])
 }
 
 fun part1() {

@@ -1,6 +1,7 @@
 package day04
 
 import java.io.File
+import kotlin.system.measureTimeMillis
 
 fun main() {
     val lines = File("src/main/kotlin/day04/input.txt")
@@ -14,8 +15,11 @@ fun main() {
         .map { BingoBoard.parse(it) }
 
 
-    part1(numbers, boards)
-    part2(numbers, boards)
+    val elapsed1 = measureTimeMillis { part1(numbers, boards) }
+    val elapsed2 = measureTimeMillis { part2(numbers, boards) }
+
+    println("Part1: Took $elapsed1 ms")
+    println("Part2: Took $elapsed2 ms")
 }
 
 fun part2(numbers: List<Int>, boards: List<BingoBoard>) {

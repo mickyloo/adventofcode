@@ -1,6 +1,7 @@
 package day06
 
 import java.io.File
+import kotlin.system.measureTimeMillis
 
 const val NEW_SPAWN_DAYS = 8
 const val RESPAWN_DAYS = 6
@@ -14,8 +15,11 @@ fun main() {
         .groupBy { it }
         .mapValues { it.value.count().toLong() }
 
-    println(FishPool(fishes).spawn(days = 80))
-    println(FishPool(fishes).spawn(days = 256))
+    val elapsed1 = measureTimeMillis { println(FishPool(fishes).spawn(days = 80)) }
+    val elapsed2 = measureTimeMillis { println(FishPool(fishes).spawn(days = 256)) }
+
+    println("Part1: Took $elapsed1 ms")
+    println("Part2: Took $elapsed2 ms")
 }
 
 class FishPool(private val initial: Map<Int, Long>) {

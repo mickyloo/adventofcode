@@ -3,13 +3,17 @@ package day05
 import java.io.File
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.system.measureTimeMillis
 
 fun main() {
     val lines = File("src/main/kotlin/day05/input.txt")
         .readLines()
 
-    run(lines, useDiagonals = false)
-    run(lines, useDiagonals = true)
+    val elapsed1 = measureTimeMillis { run(lines, useDiagonals = false) }
+    val elapsed2 = measureTimeMillis { run(lines, useDiagonals = true) }
+
+    println("Part1: Took $elapsed1 ms")
+    println("Part2: Took $elapsed2 ms")
 }
 
 fun run(lines: List<String>, useDiagonals: Boolean) {

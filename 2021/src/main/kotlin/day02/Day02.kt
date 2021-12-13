@@ -1,6 +1,7 @@
 package day02
 
 import java.io.File
+import kotlin.system.measureTimeMillis
 
 fun main() {
     val commands = File("src/main/kotlin/day02/input.txt")
@@ -10,8 +11,11 @@ fun main() {
             Pair(command, value.toInt())
         }
 
-    part1(commands)
-    part2(commands)
+    val elapsed1 = measureTimeMillis { part1(commands) }
+    val elapsed2 = measureTimeMillis { part2(commands) }
+
+    println("Part1: Took $elapsed1 ms")
+    println("Part2: Took $elapsed2 ms")
 }
 
 fun part1(commands: List<Pair<String, Int>>) {

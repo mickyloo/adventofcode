@@ -1,12 +1,16 @@
 package day08
 
 import java.io.File
+import kotlin.system.measureTimeMillis
 
 fun main() {
     val lines = File("src/main/kotlin/day08/input.txt").readLines()
 
-    part1(lines)
-    part2(lines)
+    val elapsed1 = measureTimeMillis { part1(lines) }
+    val elapsed2 = measureTimeMillis { part2(lines) }
+
+    println("Part1: Took $elapsed1 ms")
+    println("Part2: Took $elapsed2 ms")
 }
 
 val DIGITS: Map<Set<Char>, Char> = mapOf(

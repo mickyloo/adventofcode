@@ -2,13 +2,17 @@ package day03
 
 import java.io.File
 import kotlin.math.pow
+import kotlin.system.measureTimeMillis
 
 fun main() {
     val lines = File("src/main/kotlin/day03/input.txt")
         .readLines()
 
-    part1(lines)
-    part2(lines)
+    val elapsed1 = measureTimeMillis { part1(lines) }
+    val elapsed2 = measureTimeMillis { part2(lines) }
+
+    println("Part1: Took $elapsed1 ms")
+    println("Part2: Took $elapsed2 ms")
 }
 
 fun part2(lines: List<String>) {
