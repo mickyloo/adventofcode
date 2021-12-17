@@ -3,8 +3,8 @@ package day06
 import java.io.File
 import kotlin.system.measureTimeMillis
 
-const val NEW_SPAWN_DAYS = 8
-const val RESPAWN_DAYS = 6
+private const val NEW_SPAWN_DAYS = 8
+private const val RESPAWN_DAYS = 6
 
 fun main() {
     val fishes = File("src/main/kotlin/day06/input.txt")
