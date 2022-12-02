@@ -5,3 +5,4 @@ My solutions for adventofcode
 - 2017 - Python 3 / Jupyter notebook
 - 2020 - Java 15
 - 2021 - Kotlin 1.6
+- 2022 - Kotlin 1.7
