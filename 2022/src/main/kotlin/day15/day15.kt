@@ -1,8 +1,10 @@
 package day15
 
-
+import day04.anyOverlap
 import java.io.File
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.system.measureTimeMillis
 
 fun main() {
@@ -16,10 +18,10 @@ fun main() {
             Sensor(Point(sensorX.toInt(), sensorY.toInt()), Point(beaconX.toInt(), beaconY.toInt()))
         }
 
-    //val elapsed1 = measureTimeMillis { part1(sensors) }
+    val elapsed1 = measureTimeMillis { part1(sensors) }
     val elapsed2 = measureTimeMillis { part2(sensors) }
 
-    //println("Part1: $elapsed1 ms")
+    println("Part1: $elapsed1 ms")
     println("Part2: $elapsed2 ms")
 }
 
@@ -37,25 +39,42 @@ fun part1(sensors: List<Sensor>) {
 }
 
 fun part2(sensors: List<Sensor>) {
-    //val max = 20
     val max = 4_000_000
-    val col = (0..max).toSet()
-
-    for(row in 0 .. max) {
-        val covered = col - sensors.rowCoverage(row)
-        if (covered.isNotEmpty()) {
-            println("$covered and $row")
-            break
+    val beacon = (0..max)
+        .map {
+            it to sensors.coverageRanges(it)
+        }.first {
+            it.second.size > 1
         }
-    }
+
+    val x = beacon.second[0].last + 1
+    println(x * max.toLong() + beacon.first)
 }
 
 private fun List<Sensor>.rowCoverage(row: Int) =
-    this.mapNotNull {
-        it.coverage(row)
-    }.flatMap {
-        it.toSet()
-    }.toMutableSet()
+    this.coverageRanges(row)
+        .flatMap {
+            it.toSet()
+        }.toMutableSet()
+
+private fun List<Sensor>.coverageRanges(row: Int) = this.mapNotNull { it.coverage(row) }.merge()
+
+private fun List<IntRange>.merge(): MutableList<IntRange> {
+    val ranges = mutableListOf<IntRange>()
+    val sorted = this.sortedBy { it.first }
+
+    var merged = sorted.first()
+    for (r in sorted.drop(1)) {
+        merged = if (merged anyOverlap r) {
+            min(r.first, merged.first)..max(r.last, merged.last)
+        } else {
+            ranges.add(merged)
+            r
+        }
+    }
+    ranges.add(merged)
+    return ranges
+}
 
 fun Pair<Point, Point>.distance(): Int =
     abs(this.first.x - this.second.y) + abs(this.first.y - this.second.y)
