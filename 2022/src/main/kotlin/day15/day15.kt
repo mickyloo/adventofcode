@@ -76,9 +76,6 @@ private fun List<IntRange>.merge(): MutableList<IntRange> {
     return ranges
 }
 
-fun Pair<Point, Point>.distance(): Int =
-    abs(this.first.x - this.second.y) + abs(this.first.y - this.second.y)
-
 data class Point(val x: Int, val y: Int)
 
 data class Sensor(val sensor: Point, val beacon: Point) {
