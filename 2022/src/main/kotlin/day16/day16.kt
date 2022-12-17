@@ -113,10 +113,10 @@ fun part2(volcano: Map<String, Room>) {
     val stack = mutableListOf(TwoPath(listOf(beginning, beginning), listOf(26, 26), 0, valves))
     while (stack.isNotEmpty()) {
         val current = stack.removeLast()
-        println(current)
         if (current.pressure > maxPressure) {
             maxPressure = current.pressure
         }
+        println("$current - $maxPressure")
 
         for (me in current.remaining) {
             for (elephant in current.remaining) {
