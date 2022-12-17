@@ -14,10 +14,10 @@ fun main() {
             name to Room(name, valve.toInt(), tunnels.split(", "))
         }
 
-    //val elapsed1 = measureTimeMillis { part1(volcano) }
+    val elapsed1 = measureTimeMillis { part1(volcano) }
     val elapsed2 = measureTimeMillis { part2(volcano) }
 
-    //println("Part1: $elapsed1 ms")
+    println("Part1: $elapsed1 ms")
     println("Part2: $elapsed2 ms")
 }
 
@@ -116,7 +116,6 @@ fun part2(volcano: Map<String, Room>) {
         val current = stack.removeLast()
         if (current.pressure > maxPressure) {
             maxPressure = current.pressure
-            println("$current - $maxPressure")
         }
 
         for (me in current.remaining) {
