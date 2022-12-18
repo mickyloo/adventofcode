@@ -1,7 +1,6 @@
 package day16
 
 import java.io.File
-import kotlin.math.max
 import kotlin.system.measureTimeMillis
 
 fun main() {
@@ -103,7 +102,11 @@ data class TwoPath(
     val time: List<Int>,
     val pressure: Int,
     val remaining: Set<Room>,
-)
+) {
+    val maxEstimate
+        get() = pressure + remaining.sumOf { it.valve } * (time.max() - 2)
+}
+
 
 fun part2(volcano: Map<String, Room>) {
     val routes = calcRoutes(volcano)
@@ -124,39 +127,24 @@ fun part2(volcano: Map<String, Room>) {
 
                 val meTime = current.time[0] - (routes[current.room[0] to me]!! + 1)
                 val elephantTime = current.time[1] - (routes[current.room[1] to elephant]!! + 1)
-
-                if (meTime >= 0 && elephantTime >= 0) {
+                val newPath = if (meTime >= 0 && elephantTime >= 0) {
                     val newRemaining = current.remaining - me - elephant
                     val newPressure = current.pressure + (meTime * me.valve) + (elephantTime * elephant.valve)
-                    val estimatePressure = newPressure + newRemaining.sumOf { it.valve } * max(meTime, elephantTime)
-                    if (estimatePressure > maxPressure)
-                        stack.add(TwoPath(listOf(me, elephant), listOf(meTime, elephantTime), newPressure, newRemaining))
+                    TwoPath(listOf(me, elephant), listOf(meTime, elephantTime), newPressure, newRemaining)
                 } else if (meTime >= 0) {
                     val newRemaining = current.remaining - me
                     val newPressure = current.pressure + (meTime * me.valve)
-                    val estimatePressure = newPressure + newRemaining.sumOf { it.valve } * max(meTime, elephantTime)
-                    if (estimatePressure > maxPressure)
-                        stack.add(
-                            TwoPath(
-                                listOf(me, current.room[1]),
-                                listOf(meTime, current.time[1]),
-                                newPressure,
-                                newRemaining
-                            )
-                        )
+                    TwoPath(listOf(me, current.room[1]), listOf(meTime, current.time[1]), newPressure, newRemaining)
                 } else if (elephantTime >= 0) {
                     val newRemaining = current.remaining - elephant
                     val newPressure = current.pressure + (elephantTime * elephant.valve)
-                    val estimatePressure = newPressure + newRemaining.sumOf { it.valve } * max(meTime, elephantTime)
-                    if (estimatePressure > maxPressure)
-                        stack.add(
-                            TwoPath(
-                                listOf(current.room[0], elephant),
-                                listOf(current.time[0], elephantTime),
-                                newPressure,
-                                newRemaining
-                            )
-                        )
+                    TwoPath(listOf(current.room[0], elephant), listOf(current.time[0], elephantTime), newPressure, newRemaining)
+                } else null
+
+                newPath?.also {
+                    if (it.maxEstimate > maxPressure) {
+                        stack.add(it)
+                    }
                 }
             }
         }
