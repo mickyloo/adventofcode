@@ -1,7 +1,6 @@
 package day16
 
 import java.io.File
-import kotlin.math.max
 import kotlin.system.measureTimeMillis
 
 fun main() {
@@ -108,6 +107,7 @@ data class TwoPath(
         get() = pressure + remaining.sumOf { it.valve } * (time.max() - 2)
 }
 
+
 fun part2(volcano: Map<String, Room>) {
     val routes = calcRoutes(volcano)
     val valves = volcano.values.filter { it.valve > 0 }.toSet()
@@ -127,7 +127,6 @@ fun part2(volcano: Map<String, Room>) {
 
                 val meTime = current.time[0] - (routes[current.room[0] to me]!! + 1)
                 val elephantTime = current.time[1] - (routes[current.room[1] to elephant]!! + 1)
-
                 val newPath = if (meTime >= 0 && elephantTime >= 0) {
                     val newRemaining = current.remaining - me - elephant
                     val newPressure = current.pressure + (meTime * me.valve) + (elephantTime * elephant.valve)
