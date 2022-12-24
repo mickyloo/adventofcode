@@ -4,36 +4,36 @@ import java.io.File
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val file = File("src/main/kotlin/day20/input.txt")
+    val numbers = File("src/main/kotlin/day20/input.txt")
         .readLines()
-        .map {it.toInt() }
+        .map { it.toInt() }
 
-
-    val foo = mutableMapOf<String, Lazy<Int>>()
-
-    foo["root"] = lazy {
-        println("calling root")
-        foo["bar"]!!.value + 1
-    }
-    foo["bar"] = lazy {
-        println("calling bar")
-        10
-    }
-
-    println(foo["root"]!!.value)
-    println(foo["root"]!!.value)
-
-    val elapsed1 = measureTimeMillis { part1(file) }
+    val elapsed1 = measureTimeMillis { solution(numbers) }
     println("Part1: $elapsed1 ms")
 
-    val elapsed2 = measureTimeMillis { part2(file) }
-    println("Part2: $elapsed1 ms")
+    val elapsed2 = measureTimeMillis { solution(numbers, key = 811589153L, iterations = 10) }
+    println("Part2: $elapsed2 ms")
 }
 
-fun part1(file: List<Int>) {
+fun solution(numbers: List<Int>, key: Long = 1, iterations: Int = 1) {
+    // keeps track of the index of the number after moving
+    val numbers = numbers.map { it * key }
+    val indexes = numbers.indices.toMutableList()
 
-}
+    repeat(iterations) {
+        numbers.forEachIndexed { i, value ->
+            val position = indexes.indexOf(i)
+            val newPosition = (position + value).mod(numbers.size - 1)
+            indexes.add(newPosition, indexes.removeAt(position))
+        }
+    }
 
-fun part2(file: List<Int>) {
-
+    val mixed = indexes.map { numbers[it] }
+    println(
+        listOf(
+            mixed[(mixed.indexOf(0) + 1000) % mixed.size],
+            mixed[(mixed.indexOf(0) + 2000) % mixed.size],
+            mixed[(mixed.indexOf(0) + 3000) % mixed.size]
+        ).sum()
+    )
 }
