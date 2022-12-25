@@ -1,6 +1,6 @@
 package day23
 
-import Point
+import common.Point
 import java.io.File
 import kotlin.system.measureTimeMillis
 

@@ -1,5 +1,6 @@
 package day17
 
+import common.Point
 import java.io.File
 import kotlin.system.measureTimeMillis
 
@@ -13,14 +14,6 @@ fun main() {
 
     println("Part1: $elapsed1 ms")
     println("Part2: $elapsed2 ms")
-}
-
-data class Point(val x: Int, val y: Int)
-
-enum class Move(pair: Pair<Int, Int>) {
-    LEFT(-1 to 0),
-    RIGHT(1 to 0),
-    DOWN(0 to -1),
 }
 
 sealed interface Block {
@@ -50,7 +43,7 @@ fun part1(wind: CharArray) {
     val blocks = mutableSetOf<Point>()
     var height = 0
     var windIndex = 0
-    repeat(100) { round ->
+    repeat(2022) { round ->
         var xOffset = 0
         height += 4
         var current = makeBlock(round, xOffset, height)
