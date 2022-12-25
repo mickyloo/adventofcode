@@ -1,10 +1,13 @@
 package day25
 
 import java.io.File
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sign
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val numbers = File("src/main/kotlin/day25/input.example.txt")
+    val numbers = File("src/main/kotlin/day25/input.txt")
         .readLines()
         .map { line ->
             line.reversed().chunked(1).map {
@@ -24,28 +27,48 @@ fun main() {
 }
 
 val base5 = mapOf( 0 to 0, 1 to 1, 2 to 2, 3 to -2, 4 to -1)
+val snafu = mapOf( 0 to "0", 1 to "1", 2 to "2", -2 to "=", -1 to "-")
+fun List<Int>.toSnafu() =
+    this.joinToString("") {
+        snafu[it]!!
+    }.reversed()
+
+fun List<Int>.toBase10() =
+    this.mapIndexed { i, value ->
+        value * 5.toDouble().pow(i.toDouble())
+    }.sum().toLong()
+
 fun part1(numbers: List<List<Int>>) {
     val maxLen = numbers.maxOf { it.size }
     var sum = (0 until maxLen)
         .map { index ->
             numbers.sumOf { it.getOrElse(index) { 0 } }
         }.toMutableList()
+
     sum.add(sum.size, 0)
     println(sum)
+    println(sum.toBase10())
 
     var carries = (0..sum.size).map { 0 }.toMutableList()
 
-    for ((i, value) in sum.dropLast(1).withIndex()) {
-        sum[i] = base5[(value + carries[i]).mod(5)]!!
-        carries[i+1] = value / 5
+    for ((i, value) in sum.withIndex()) {
+        val total = value + carries[i]
+        if (total > 0) {
+            val newDigit = base5[total.mod(5)]!!
+            sum[i] = newDigit
+            carries[i+1] = abs(total / 5)
+            if (newDigit < 0) {
+                carries[i+1] += 1
+            }
+        } else {
+
+        }
+
     }
 
+    println(carries)
     println(sum)
-//
-//    println(10 * 5^0 + 11*5^1 + (-2 * 5^2) + (4* 5^3) + (2* 5^4) + (1* 5^5))
-//
-//    1  2  4 -2 11 10
-//    2  =  -  1  =  0
-//
-//    2 -2 -1  1  -2 0
+    println(sum.toBase10())
+    //println(sum.toSnafu())
+
 }
