@@ -12,9 +12,9 @@ fun main() {
         }
 
     val elapsed1 = measureTimeMillis { solution(moves) }
-    val elapsed2 = measureTimeMillis { solution(moves, 10) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { solution(moves, 10) }
     println("Part2: $elapsed2 ms")
 }
 

@@ -7,9 +7,9 @@ fun main() {
     val rounds = File("src/main/kotlin/day02/input.txt").readLines()
 
     val elapsed1 = measureTimeMillis { part1(rounds) }
-    val elapsed2 = measureTimeMillis { part2(rounds) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(rounds) }
     println("Part2: $elapsed2 ms")
 }
 

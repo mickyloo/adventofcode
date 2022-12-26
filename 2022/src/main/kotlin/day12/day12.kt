@@ -31,9 +31,9 @@ fun main() {
     }
 
     val elapsed1 = measureTimeMillis { part1(heights.toMap(), start!!, end!!) }
-    val elapsed2 = measureTimeMillis { part2(heights.toMap(), end!!) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(heights.toMap(), end!!) }
     println("Part2: $elapsed2 ms")
 }
 

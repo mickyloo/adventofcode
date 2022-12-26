@@ -9,9 +9,9 @@ fun main() {
         .map { line -> line.split(" -> ").map { it.toPoint() } }
 
     val elapsed1 = measureTimeMillis { part1(lines.toCave()) }
-    val elapsed2 = measureTimeMillis { part2(lines.toCave()) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(lines.toCave()) }
     println("Part2: $elapsed2 ms")
 }
 

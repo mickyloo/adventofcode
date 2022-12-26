@@ -14,9 +14,9 @@ fun main() {
         }
 
     val elapsed1 = measureTimeMillis { part1(volcano) }
-    val elapsed2 = measureTimeMillis { part2(volcano) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(volcano) }
     println("Part2: $elapsed2 ms")
 }
 

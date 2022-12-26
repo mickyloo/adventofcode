@@ -10,9 +10,9 @@ fun main() {
         .readText().trim().toCharArray()
 
     val elapsed1 = measureTimeMillis { part1(wind) }
-    val elapsed2 = measureTimeMillis { part2(wind) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(wind) }
     println("Part2: $elapsed2 ms")
 }
 

@@ -1,5 +1,6 @@
 package day22
 
+import common.readParagraphs
 import java.io.File
 import kotlin.system.measureTimeMillis
 
@@ -29,10 +30,7 @@ enum class Direction(val dx: Int, val dy: Int, val value: Int) {
 }
 
 fun main() {
-    val (boardMap, movement) = File("src/main/kotlin/day22/input.txt")
-        .readText()
-        .trimEnd()
-        .split("\n\n", "\r\n\r\n")
+    val (boardMap, movement) = File("src/main/kotlin/day22/input.txt").readParagraphs()
 
     val map = boardMap.lines()
         .mapIndexed { y, line -> line

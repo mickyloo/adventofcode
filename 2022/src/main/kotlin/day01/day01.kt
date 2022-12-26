@@ -1,19 +1,18 @@
 package day01
 
+import common.readParagraphs
 import java.io.File
 import kotlin.system.measureTimeMillis
 
 fun main() {
     val elves = File("src/main/kotlin/day01/input.txt")
-        .readText()
-        .trim()
-        .split("\n\n", "\r\n\r\n")
+        .readParagraphs()
         .map { elf -> elf.split("\n", "\r\n").map { it.toInt() } }
 
     val elapsed1 = measureTimeMillis { part1(elves) }
-    val elapsed2 = measureTimeMillis { part2(elves) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(elves) }
     println("Part2: $elapsed2 ms")
 }
 

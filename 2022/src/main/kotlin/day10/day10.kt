@@ -10,10 +10,11 @@ fun main() {
         .map { it.split(" ") }
 
     val values = setup(instructions)
-    val elapsed1 = measureTimeMillis { part1(values) }
-    val elapsed2 = measureTimeMillis { part2(values) }
 
+    val elapsed1 = measureTimeMillis { part1(values) }
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(values) }
     println("Part2: $elapsed2 ms")
 }
 

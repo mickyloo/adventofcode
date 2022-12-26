@@ -19,9 +19,9 @@ fun main() {
         }
 
     val elapsed1 = measureTimeMillis { part1(sensors) }
-    val elapsed2 = measureTimeMillis { part2(sensors) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(sensors) }
     println("Part2: $elapsed2 ms")
 }
 

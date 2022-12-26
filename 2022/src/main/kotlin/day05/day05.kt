@@ -1,5 +1,6 @@
 package day05
 
+import common.readParagraphs
 import java.io.File
 import kotlin.system.measureTimeMillis
 
@@ -8,11 +9,7 @@ data class Move(val amount: Int, val fromIndex: Int, val toIndex: Int)
 fun main() {
     val regex = Regex("""^move (\d+) from (\d) to (\d)$""")
 
-    val texts = File("src/main/kotlin/day05/input.txt")
-        .readText()
-        .trimEnd()
-        .split("\n\n", "\r\n\r\n")
-
+    val texts = File("src/main/kotlin/day05/input.txt").readParagraphs()
     val moves = texts[1]
         .lines()
         .map {
@@ -24,9 +21,9 @@ fun main() {
     val numCols = containerText.last().replace(" ", "").length
 
     val elapsed1 = measureTimeMillis { part1(containerText.toContainerStacks(numCols), moves) }
-    val elapsed2 = measureTimeMillis { part2(containerText.toContainerStacks(numCols), moves) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(containerText.toContainerStacks(numCols), moves) }
     println("Part2: $elapsed2 ms")
 }
 

@@ -11,12 +11,14 @@ fun main() {
     val commands = File("src/main/kotlin/day07/input.txt").readLines()
 
     val (fs, setupTime) = measureTimedValue { buildFilesystem(commands) }
-    val elapsed1 = measureTimeMillis { part1(fs) }
-    val elapsed2 = measureTimeMillis { part2(fs) }
-
     println("Setup: ${setupTime.inWholeMilliseconds} ms")
+
+    val elapsed1 = measureTimeMillis { part1(fs) }
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(fs) }
     println("Part2: $elapsed2 ms")
+
 }
 
 fun part1(fs: Filesystem) {

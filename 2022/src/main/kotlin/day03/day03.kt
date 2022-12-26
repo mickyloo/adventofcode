@@ -15,9 +15,9 @@ fun main() {
         .map { it.toCharArray() }
 
     val elapsed1 = measureTimeMillis { part1(lines) }
-    val elapsed2 = measureTimeMillis { part2(lines) }
-
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(lines) }
     println("Part2: $elapsed2 ms")
 }
 
