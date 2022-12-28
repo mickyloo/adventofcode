@@ -20,6 +20,7 @@ fun main() {
     println("Part2: $elapsed2 ms")
 }
 
+
 fun calcRoutes(volcano: Map<String, Room>): Map<Pair<Room, Room>, Int> {
     val valves = volcano.values.filter { it.valve > 0 }.map { it.name }
     val routes = mutableMapOf<Pair<Room, Room>, Int>()
@@ -97,57 +98,43 @@ fun part1(volcano: Map<String, Room>) {
     println(maxPressure)
 }
 
-data class TwoPath(
-    val room: List<Room>,
-    val time: List<Int>,
-    val pressure: Int,
-    val remaining: Set<Room>,
-) {
-    val maxEstimate
-        get() = pressure + remaining.sumOf { it.valve } * (time.max() - 2)
-}
-
-
 fun part2(volcano: Map<String, Room>) {
     val routes = calcRoutes(volcano)
     val valves = volcano.values.filter { it.valve > 0 }.toSet()
 
-    var maxPressure = 0
-    val beginning = volcano["AA"]!!
-    val stack = mutableListOf(TwoPath(listOf(beginning, beginning), listOf(26, 26), 0, valves))
+    var maxPressures = mutableMapOf<Set<Room>, Int>()
+    val stack = mutableListOf(Path(volcano["AA"]!!, 26, 0, valves))
+
     while (stack.isNotEmpty()) {
         val current = stack.removeLast()
-        if (current.pressure > maxPressure) {
-            maxPressure = current.pressure
-        }
 
-        for (me in current.remaining) {
-            for (elephant in current.remaining) {
-                if (me == elephant) continue
-
-                val meTime = current.time[0] - (routes[current.room[0] to me]!! + 1)
-                val elephantTime = current.time[1] - (routes[current.room[1] to elephant]!! + 1)
-                val newPath = if (meTime >= 0 && elephantTime >= 0) {
-                    val newRemaining = current.remaining - me - elephant
-                    val newPressure = current.pressure + (meTime * me.valve) + (elephantTime * elephant.valve)
-                    TwoPath(listOf(me, elephant), listOf(meTime, elephantTime), newPressure, newRemaining)
-                } else if (meTime >= 0) {
-                    val newRemaining = current.remaining - me
-                    val newPressure = current.pressure + (meTime * me.valve)
-                    TwoPath(listOf(me, current.room[1]), listOf(meTime, current.time[1]), newPressure, newRemaining)
-                } else if (elephantTime >= 0) {
-                    val newRemaining = current.remaining - elephant
-                    val newPressure = current.pressure + (elephantTime * elephant.valve)
-                    TwoPath(listOf(current.room[0], elephant), listOf(current.time[0], elephantTime), newPressure, newRemaining)
-                } else null
-
-                newPath?.also {
-                    if (it.maxEstimate > maxPressure) {
-                        stack.add(it)
-                    }
+        current.remaining.forEach {
+            val newRemaining = current.remaining - it
+            val newTime = current.time - (routes[current.room to it]!! + 1)
+            if (newTime >= 0) {
+                val newPressure = current.pressure + (newTime * it.valve)
+                stack.add(Path(it, newTime, newPressure, newRemaining))
+            } else {
+                // no more moves remaining, record max pressure
+                val visited = valves - newRemaining
+                val maxPressure = maxPressures.getOrDefault(visited, 0)
+                if (current.pressure > maxPressure) {
+                    maxPressures[visited] = current.pressure
                 }
             }
         }
     }
-    println(maxPressure)
+
+    var maxMeAndElephant = 0
+    for ((meVisited, mePressure) in maxPressures) {
+        for ((elephantVisited, elephantPressure) in maxPressures) {
+            val disjointVisits = (meVisited intersect elephantVisited).isEmpty()
+            val totalPressure = mePressure + elephantPressure
+            if (disjointVisits && totalPressure > maxMeAndElephant) {
+                maxMeAndElephant = totalPressure
+            }
+        }
+    }
+
+    println(maxMeAndElephant)
 }
