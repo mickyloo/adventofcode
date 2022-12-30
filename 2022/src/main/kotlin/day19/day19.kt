@@ -1,5 +1,8 @@
 package day19
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import kotlin.system.measureTimeMillis
 import java.util.concurrent.Executors
@@ -27,20 +30,27 @@ fun main() {
 }
 
 fun part1(blueprints: List<Blueprint>) {
-    println(blueprints.sumOf {
-        it.num * it.run(24)
-    })
+    var results = blueprints.associate { it.num to 0 }.toMutableMap()
+    runBlocking {
+        blueprints.forEach {
+            async(Dispatchers.Default) {
+                results[it.num] = it.num * it.run(24)
+            }
+        }
+    }
+    println(results.values.sum())
 }
 
 fun part2(blueprints: List<Blueprint>) {
-    val executors = Executors.newFixedThreadPool(3)
-    blueprints.take(3).forEach {
-        executors.submit {
-            println("launching ${it.num}")
-            val result = it.run(32)
-            println("result for ${it.num} is $result")
-        }
-    }
+    println(blueprints[2].run(32))
+//    val executors = Executors.newFixedThreadPool(3)
+//    blueprints.drop(1).take(2).forEach {
+//        executors.submit {
+//            println("launching ${it.num}")
+//            val result = it.run(32)
+//            println("result for ${it.num} is $result")
+//        }
+//    }
 }
 
 data class Resource(val ore: Int, val clay: Int, val obsidian: Int, val geode: Int) {
