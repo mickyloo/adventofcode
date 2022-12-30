@@ -7,18 +7,21 @@ import java.io.File
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val re = Regex("""Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian.""")
+    val re =
+        Regex("""Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian.""")
 
     val blueprints = File("src/main/kotlin/day19/input.txt")
         .readLines()
         .map {
             val matches = re.matchEntire(it)!!.destructured.toList().map { it.toInt() }
-            Blueprint(matches[0], mapOf(
-                Bot.ORE to Cost(matches[1], 0, 0),
-                Bot.CLAY to Cost(matches[2], 0, 0),
-                Bot.OBSIDIAN to Cost(matches[3], matches[4], 0),
-                Bot.GEODE to Cost(matches[5], 0, matches[6])
-            ))
+            Blueprint(
+                matches[0], mapOf(
+                    Bot.ORE to Cost(matches[1], 0, 0),
+                    Bot.CLAY to Cost(matches[2], 0, 0),
+                    Bot.OBSIDIAN to Cost(matches[3], matches[4], 0),
+                    Bot.GEODE to Cost(matches[5], 0, matches[6])
+                )
+            )
         }
 
     val elapsed1 = measureTimeMillis { part1(blueprints) }
@@ -62,11 +65,12 @@ data class Resource(val ore: Int, val clay: Int, val obsidian: Int, val geode: I
     fun canBuy(cost: Cost): Boolean =
         ore >= cost.ore && clay >= cost.clay && obsidian >= cost.obsidian
 }
+
 data class Workforce(val ore: Int, val clay: Int, val obsidian: Int, val geode: Int)
 data class State(val remaining: Int, val resource: Resource, val workforce: Workforce) {
     fun buy(bot: Bot, cost: Cost): State {
         val newResource = resource - cost + workforce
-        val newWorkforce = when(bot) {
+        val newWorkforce = when (bot) {
             Bot.ORE -> workforce.copy(ore = workforce.ore + 1)
             Bot.CLAY -> workforce.copy(clay = workforce.clay + 1)
             Bot.OBSIDIAN -> workforce.copy(obsidian = workforce.obsidian + 1)
@@ -74,6 +78,7 @@ data class State(val remaining: Int, val resource: Resource, val workforce: Work
         }
         return State(remaining - 1, newResource, newWorkforce)
     }
+
     fun stay(): State = State(
         this.remaining - 1,
         this.resource + this.workforce,
@@ -87,6 +92,7 @@ private val INITIAL_WORKFORCE = Workforce(1, 0, 0, 0)
 enum class Bot {
     ORE, CLAY, OBSIDIAN, GEODE
 }
+
 data class Cost(val ore: Int, val clay: Int, val obsidian: Int)
 
 data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
@@ -99,7 +105,7 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
     )
 
     private fun tryBuy(state: State, bot: Bot): State {
-        val numBot = when(bot) {
+        val numBot = when (bot) {
             Bot.ORE -> state.workforce.ore
             Bot.CLAY -> state.workforce.clay
             Bot.OBSIDIAN -> state.workforce.obsidian
@@ -116,7 +122,7 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
         return state
     }
 
-    fun run(minutes: Int = 24) : Int {
+    fun run(minutes: Int = 24): Int {
         val buyOrder = listOf(Bot.OBSIDIAN, Bot.CLAY, Bot.ORE)
         var maxGeodeBot = (minutes downTo 0).associateWith { 0 }.toMutableMap()
         var maxGeode = (minutes downTo 0).associateWith { 0 }.toMutableMap()
@@ -124,7 +130,7 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
         val work = ArrayDeque<State>()
         work.add(State(minutes, INITIAL_RESOURCE, INITIAL_WORKFORCE))
 
-        while(work.isNotEmpty()) {
+        while (work.isNotEmpty()) {
             val state = work.removeLast()
 
             val lessGeodes = state.resource.geode < maxGeode[state.remaining]!!
@@ -146,7 +152,7 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
             } else {
                 // only consider other bots if not buying geode bot
                 work.add(state.stay())
-                for(bot in buyOrder) {
+                for (bot in buyOrder) {
                     val newState = tryBuy(state, bot)
                     if (newState != state) {
                         work.add(newState)
