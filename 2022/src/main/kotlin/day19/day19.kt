@@ -5,7 +5,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import kotlin.system.measureTimeMillis
-import java.util.concurrent.Executors
 
 fun main() {
     val re = Regex("""Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian.""")
@@ -118,30 +117,32 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
     }
 
     fun run(minutes: Int = 24) : Int {
-        val work = ArrayDeque<State>()
-        var maxGeode = (minutes downTo 0).associateWith { 0 }.toMutableMap()
-        work.add(State(minutes, INITIAL_RESOURCE, INITIAL_WORKFORCE))
         val buyOrder = listOf(Bot.OBSIDIAN, Bot.CLAY, Bot.ORE)
+        var maxGeodeBot = (minutes downTo 0).associateWith { 0 }.toMutableMap()
+        var maxGeode = (minutes downTo 0).associateWith { 0 }.toMutableMap()
 
-        work@ while(work.isNotEmpty()) {
+        val work = ArrayDeque<State>()
+        work.add(State(minutes, INITIAL_RESOURCE, INITIAL_WORKFORCE))
+
+        while(work.isNotEmpty()) {
             val state = work.removeLast()
 
-            val maxPossible = state.resource.geode + state.remaining
-            if (maxPossible < maxGeode[state.remaining]!!) {
+            val lessGeodes = state.resource.geode < maxGeode[state.remaining]!!
+            val lessGeodeBots = state.workforce.geode < maxGeodeBot[state.remaining]!!
+            if (lessGeodes || lessGeodeBots) {
                 continue
             }
 
             maxGeode[state.remaining] = maxOf(maxGeode[state.remaining]!!, state.resource.geode)
+            maxGeodeBot[state.remaining] = maxOf(maxGeodeBot[state.remaining]!!, state.workforce.geode)
             if (state.remaining < 1) {
                 continue
             }
 
             // do geode bot first
             val newStateForGeode = tryBuy(state, Bot.GEODE)
-            var addedBot = false
             if (newStateForGeode != state) {
                 work.add(newStateForGeode)
-                addedBot = true
             } else {
                 // only consider other bots if not buying geode bot
                 work.add(state.stay())
@@ -149,12 +150,9 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
                     val newState = tryBuy(state, bot)
                     if (newState != state) {
                         work.add(newState)
-                        addedBot = true
                     }
                 }
             }
-//            i
-
         }
         return maxGeode[0]!!
     }
