@@ -22,8 +22,8 @@ fun main() {
             ))
         }
 
-//    val elapsed1 = measureTimeMillis { part1(blueprints) }
-//    println("Part1: $elapsed1 ms")
+    val elapsed1 = measureTimeMillis { part1(blueprints) }
+    println("Part1: $elapsed1 ms")
 
     val elapsed2 = measureTimeMillis { part2(blueprints.take(3)) }
     println("Part2: $elapsed2 ms")
@@ -50,7 +50,6 @@ fun part2(blueprints: List<Blueprint>) {
             }
         }
     }
-    println(results)
     println(results[0] * results[1] * results[2])
 }
 
@@ -127,22 +126,22 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
         work@ while(work.isNotEmpty()) {
             val state = work.removeLast()
 
-            val maxPossible = state.remaining + state.resource.geode
+            val maxPossible = state.resource.geode + state.remaining
             if (maxPossible < maxGeode[state.remaining]!!) {
-                //println("skip $state")
                 continue
             }
 
             maxGeode[state.remaining] = maxOf(maxGeode[state.remaining]!!, state.resource.geode)
             if (state.remaining < 1) {
                 continue
-                println(maxGeode)
             }
 
             // do geode bot first
             val newStateForGeode = tryBuy(state, Bot.GEODE)
+            var addedBot = false
             if (newStateForGeode != state) {
                 work.add(newStateForGeode)
+                addedBot = true
             } else {
                 // only consider other bots if not buying geode bot
                 work.add(state.stay())
@@ -150,11 +149,13 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
                     val newState = tryBuy(state, bot)
                     if (newState != state) {
                         work.add(newState)
+                        addedBot = true
                     }
                 }
             }
+//            i
+
         }
-        println(maxGeode)
         return maxGeode[0]!!
     }
 }
