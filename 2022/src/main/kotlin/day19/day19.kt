@@ -25,7 +25,7 @@ fun main() {
 //    val elapsed1 = measureTimeMillis { part1(blueprints) }
 //    println("Part1: $elapsed1 ms")
 
-    val elapsed2 = measureTimeMillis { part2(blueprints) }
+    val elapsed2 = measureTimeMillis { part2(blueprints.take(3)) }
     println("Part2: $elapsed2 ms")
 }
 
@@ -42,15 +42,16 @@ fun part1(blueprints: List<Blueprint>) {
 }
 
 fun part2(blueprints: List<Blueprint>) {
-    println(blueprints[2].run(32))
-//    val executors = Executors.newFixedThreadPool(3)
-//    blueprints.drop(1).take(2).forEach {
-//        executors.submit {
-//            println("launching ${it.num}")
-//            val result = it.run(32)
-//            println("result for ${it.num} is $result")
-//        }
-//    }
+    var results = mutableListOf(0, 0, 0)
+    runBlocking {
+        blueprints.forEachIndexed { index, blueprint ->
+            async(Dispatchers.Default) {
+                results[index] = blueprint.run(32)
+            }
+        }
+    }
+    println(results)
+    println(results[0] * results[1] * results[2])
 }
 
 data class Resource(val ore: Int, val clay: Int, val obsidian: Int, val geode: Int) {
@@ -92,7 +93,24 @@ data class Cost(val ore: Int, val clay: Int, val obsidian: Int)
 
 data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
 
+    private val maxBots = mapOf(
+        Bot.ORE to cost.maxOf { (_, cost) -> cost.ore },
+        Bot.CLAY to cost.maxOf { (_, cost) -> cost.clay },
+        Bot.OBSIDIAN to cost.maxOf { (_, cost) -> cost.obsidian },
+        Bot.GEODE to Int.MAX_VALUE
+    )
+
     private fun tryBuy(state: State, bot: Bot): State {
+        val numBot = when(bot) {
+            Bot.ORE -> state.workforce.ore
+            Bot.CLAY -> state.workforce.clay
+            Bot.OBSIDIAN -> state.workforce.obsidian
+            Bot.GEODE -> state.workforce.geode
+        }
+        if (numBot >= maxBots[bot]!!) {
+            return state
+        }
+
         val cost = cost[bot]!!
         if (state.resource.canBuy(cost)) {
             return state.buy(bot, cost)
@@ -104,13 +122,14 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
         val work = ArrayDeque<State>()
         var maxGeode = (minutes downTo 0).associateWith { 0 }.toMutableMap()
         work.add(State(minutes, INITIAL_RESOURCE, INITIAL_WORKFORCE))
-        val buyOrder = Bot.values().reversed()
+        val buyOrder = listOf(Bot.OBSIDIAN, Bot.CLAY, Bot.ORE)
 
         work@ while(work.isNotEmpty()) {
             val state = work.removeLast()
 
             val maxPossible = state.remaining + state.resource.geode
             if (maxPossible < maxGeode[state.remaining]!!) {
+                //println("skip $state")
                 continue
             }
 
@@ -120,14 +139,22 @@ data class Blueprint(val num: Int, val cost: Map<Bot, Cost>) {
                 println(maxGeode)
             }
 
-            work.add(state.stay())
-            for(bot in buyOrder) {
-                val newState = tryBuy(state, bot)
-                if (newState != state) {
-                    work.add(newState)
+            // do geode bot first
+            val newStateForGeode = tryBuy(state, Bot.GEODE)
+            if (newStateForGeode != state) {
+                work.add(newStateForGeode)
+            } else {
+                // only consider other bots if not buying geode bot
+                work.add(state.stay())
+                for(bot in buyOrder) {
+                    val newState = tryBuy(state, bot)
+                    if (newState != state) {
+                        work.add(newState)
+                    }
                 }
             }
         }
+        println(maxGeode)
         return maxGeode[0]!!
     }
 }
