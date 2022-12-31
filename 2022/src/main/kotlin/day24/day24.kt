@@ -1,15 +1,14 @@
 package day24
 
 import common.Point
-import common.lcm
 import java.io.File
 import kotlin.system.measureTimeMillis
 
 enum class Direction(val dx: Int, val dy: Int) {
     U(0, -1),
-    D(0,1),
+    D(0, 1),
     L(-1, 0),
-    R(1,0),
+    R(1, 0),
 }
 
 fun main() {
@@ -19,11 +18,11 @@ fun main() {
         .flatMapIndexed { y, row ->
             row.drop(1).dropLast(1)
                 .mapIndexed { x, col ->
-                    when(col) {
-                        '^' -> Point(x,y) to Direction.U
-                        'v' -> Point(x,y) to Direction.D
-                        '<' -> Point(x,y) to Direction.L
-                        '>' -> Point(x,y) to Direction.R
+                    when (col) {
+                        '^' -> Point(x, y) to Direction.U
+                        'v' -> Point(x, y) to Direction.D
+                        '<' -> Point(x, y) to Direction.L
+                        '>' -> Point(x, y) to Direction.R
                         else -> null
                     }
                 }.filterNotNull()
@@ -31,6 +30,9 @@ fun main() {
 
     val elapsed1 = measureTimeMillis { part1(blizzards) }
     println("Part1: $elapsed1 ms")
+
+    val elapsed2 = measureTimeMillis { part2(blizzards) }
+    println("Part2: $elapsed2 ms")
 }
 
 class Grid(private val blizzards: Map<Point, Direction>) {
@@ -42,10 +44,7 @@ class Grid(private val blizzards: Map<Point, Direction>) {
 
     val START = Point(0, -1)
     val END = Point(numCols - 1, numRows)
-
-    val cycle: Int = lcm(numCols, numRows)
-
-    fun isValid(position: Point, minutes: Int): Boolean {
+    private fun isValid(position: Point, minutes: Int): Boolean {
         val collisionHorizontal = rows.getOrDefault(position.y, emptyList())
             .filter { it.value == Direction.L || it.value == Direction.R }
             .any {
@@ -63,7 +62,7 @@ class Grid(private val blizzards: Map<Point, Direction>) {
         return !collisionVertical && !collisionHorizontal
     }
 
-    fun neighbors(state: State): List<Point> =
+    private fun neighbors(state: State): List<Point> =
         listOf(
             Point(state.position.x, state.position.y),
             Point(state.position.x + Direction.U.dx, state.position.y + Direction.U.dy),
@@ -72,48 +71,51 @@ class Grid(private val blizzards: Map<Point, Direction>) {
             Point(state.position.x + Direction.R.dx, state.position.y + Direction.R.dy)
         ).filter {
             val inGrid = it.x in 0 until numCols && it.y in 0 until numRows
-            (inGrid && isValid(it, state.minutes + 1)) || it == END|| it == START
+            (inGrid && isValid(it, state.minutes + 1)) || it == END || it == START
         }
+
+    fun findPathTime(start: Point, end: Point, startTime: Int = 0): Int {
+        var work = ArrayDeque<State>().also { it.add(State(start, startTime)) }
+        var visited = mutableSetOf<State>()
+
+        var minTime = startTime + 1000
+        while (work.isNotEmpty()) {
+            val state = work.removeLast()
+
+            if (state.position == end) {
+                minTime = minOf(minTime, state.minutes)
+                continue
+            }
+
+            if (state in visited) {
+                continue
+            }
+            if (state.minutes > minTime) {
+                continue
+            }
+
+            val neighbors = this.neighbors(state)
+            neighbors.forEach { work.add(State(it, state.minutes + 1)) }
+
+            visited.add(state)
+        }
+
+        return minTime
+    }
 }
 
-data class State(val position: Point, val minutes: Int) {
-    fun mod(mod: Int) = position to minutes.mod(mod)
-}
+data class State(val position: Point, val minutes: Int)
+
 
 fun part1(blizzards: Map<Point, Direction>) {
     val grid = Grid(blizzards)
+    println(grid.findPathTime(grid.START, grid.END))
+}
 
-    println(grid.cycle)
-    println(grid.numRows)
-    println(grid.numCols)
-//    println(gcd(grid.rows, grid.cols))
-//    println(lcm(grid.rows, grid.cols))
-
-    var work = ArrayDeque<State>().also { it.add(State(grid.START, 0)) }
-    var visited = mutableSetOf<Pair<Point, Int>>()
-
-    var minPath = Int.MAX_VALUE
-    while(work.isNotEmpty()) {
-        val state = work.removeLast()
-
-        if (state.position == grid.END) {
-            println("found end, minutes=${state.minutes}")
-            minPath = minOf(minPath, state.minutes)
-            continue
-        }
-
-        if (state.mod(grid.cycle) in visited) {
-            continue
-        }
-        if (state.minutes > minPath) {
-            continue
-        }
-
-        val neighbors = grid.neighbors(state)
-        neighbors.forEach { work.add(State(it, state.minutes + 1)) }
-
-        visited.add(state.mod(grid.cycle))
-    }
-
-    println(minPath)
+fun part2(blizzards: Map<Point, Direction>) {
+    val grid = Grid(blizzards)
+    val firstTrip = grid.findPathTime(grid.START, grid.END)
+    val returnTrip = grid.findPathTime(grid.END, grid.START, startTime = firstTrip)
+    val finalTrip = grid.findPathTime(grid.START, grid.END, startTime = returnTrip)
+    println(finalTrip)
 }
