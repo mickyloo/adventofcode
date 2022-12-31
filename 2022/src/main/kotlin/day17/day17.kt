@@ -86,7 +86,7 @@ class FallingRocks(private val wind: CharArray) {
 
     fun pattern(): String {
         val pattern = StringBuilder()
-        for (y in height downTo height - 4) {
+        for (y in height downTo height - 50) {
             for (x in 0..6) {
                 pattern.append(if (Point(x, y) in blocks) "#" else ".")
             }
