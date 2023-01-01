@@ -1,10 +1,10 @@
 package day02
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val rounds = File("src/main/kotlin/day02/input.txt").readLines()
+    val rounds = readLines("day02/input.txt")
 
     val elapsed1 = measureTimeMillis { part1(rounds) }
     println("Part1: $elapsed1 ms")

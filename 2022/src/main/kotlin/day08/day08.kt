@@ -1,11 +1,10 @@
 package day08
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val trees = File("src/main/kotlin/day08/input.txt")
-        .readLines()
+    val trees = readLines("day08/input.txt")
         .map { row ->
             row.chunked(1).map { it.toInt() }
         }

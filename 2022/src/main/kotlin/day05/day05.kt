@@ -1,7 +1,6 @@
 package day05
 
 import common.readParagraphs
-import java.io.File
 import kotlin.system.measureTimeMillis
 
 data class Move(val amount: Int, val fromIndex: Int, val toIndex: Int)
@@ -9,7 +8,7 @@ data class Move(val amount: Int, val fromIndex: Int, val toIndex: Int)
 fun main() {
     val regex = Regex("""^move (\d+) from (\d) to (\d)$""")
 
-    val texts = File("src/main/kotlin/day05/input.txt").readParagraphs()
+    val texts = readParagraphs("day05/input.txt")
     val moves = texts[1]
         .lines()
         .map {

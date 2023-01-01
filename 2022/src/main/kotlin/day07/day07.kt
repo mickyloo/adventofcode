@@ -1,14 +1,13 @@
-@file:OptIn(ExperimentalTime::class, ExperimentalTime::class)
-
 package day07
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
 
+@OptIn(ExperimentalTime::class)
 fun main() {
-    val commands = File("src/main/kotlin/day07/input.txt").readLines()
+    val commands = readLines("day07/input.txt")
 
     val (fs, setupTime) = measureTimedValue { buildFilesystem(commands) }
     println("Setup: ${setupTime.inWholeMilliseconds} ms")

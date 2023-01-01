@@ -1,13 +1,12 @@
 package day17
 
 import common.Point
-import java.io.File
+import common.readText
 import kotlin.system.measureTimeMillis
 
 fun main() {
 
-    val wind = File("src/main/kotlin/day17/input.txt")
-        .readText().trim().toCharArray()
+    val wind = readText("day17/input.txt").toCharArray()
 
     val elapsed1 = measureTimeMillis { part1(wind) }
     println("Part1: $elapsed1 ms")

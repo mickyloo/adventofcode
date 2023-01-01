@@ -1,10 +1,10 @@
 package day06
 
-import java.io.File
+import common.readText
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val signal = File("src/main/kotlin/day06/input.txt").readText().trim()
+    val signal = readText("day06/input.txt")
 
     val elapsed1 = measureTimeMillis { solution(signal, distinct = 4) }
     val elapsed2 = measureTimeMillis { solution(signal, distinct = 14) }

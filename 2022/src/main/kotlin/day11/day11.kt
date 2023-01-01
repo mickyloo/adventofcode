@@ -1,12 +1,11 @@
 package day11
 
 import common.readParagraphs
-import java.io.File
 import kotlin.system.measureTimeMillis
 
 fun main() {
 
-    val blocks = File("src/main/kotlin/day11/input.txt").readParagraphs()
+    val blocks = readParagraphs("day11/input.txt")
 
     val elapsed1 = measureTimeMillis { part1(blocks) }
     println("Part1: $elapsed1 ms")

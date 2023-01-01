@@ -1,12 +1,11 @@
 package day23
 
 import common.Point
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val elves = File("src/main/kotlin/day23/input.txt")
-        .readLines()
+    val elves = readLines("day23/input.txt")
         .mapIndexed { y, line ->
             line.chunked(1).mapIndexed { x, char ->
                 if (char == "#")

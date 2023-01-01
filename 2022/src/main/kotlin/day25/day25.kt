@@ -1,13 +1,12 @@
 package day25
 
-import java.io.File
+import common.readLines
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val numbers = File("src/main/kotlin/day25/input.txt")
-        .readLines()
+    val numbers = readLines("day25/input.txt")
         .map { line ->
             line.reversed().chunked(1).map {
                 when (it) {

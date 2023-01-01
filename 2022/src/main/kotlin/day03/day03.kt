@@ -1,6 +1,6 @@
 package day03
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 
@@ -10,8 +10,7 @@ private val VALUES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     .toMap()
 
 fun main() {
-    val lines = File("src/main/kotlin/day03/input.txt")
-        .readLines()
+    val lines = readLines("day03/input.txt")
         .map { it.toCharArray() }
 
     val elapsed1 = measureTimeMillis { part1(lines) }

@@ -1,12 +1,12 @@
 package day12
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 
 fun main() {
 
-    val lines = File("src/main/kotlin/day12/input.txt").readLines().map { it.toCharArray() }
+    val lines = readLines("day12/input.txt").map { it.toCharArray() }
     var start: Point? = null
     var end: Point? = null
     val heights = mutableMapOf<Point, Int>()

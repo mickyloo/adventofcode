@@ -1,12 +1,11 @@
 package day04
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 fun main() {
     val regex = Regex("""^(\d+)\-(\d+)\,(\d+)\-(\d+)$""")
-    val lines = File("src/main/kotlin/day04/input.txt")
-        .readLines()
+    val lines = readLines("day04/input.txt")
         .map {
             val matches = regex.matchEntire(it)!!
             val (e1Start, e1End, e2Start, e2End) = matches.destructured

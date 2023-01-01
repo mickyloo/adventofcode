@@ -1,13 +1,13 @@
 package day16
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 fun main() {
     val re = Regex("""Valve ([A-Z]{2}) has flow rate=(\d+); tunnels? leads? to valves? (.*)""")
 
-    val volcano = File("src/main/kotlin/day16/input.txt")
-        .readLines().associate {
+    val volcano = readLines("day16/input.txt")
+        .associate {
             val matches = re.matchEntire(it)!!
             val (name, valve, tunnels) = matches.destructured
             name to Room(name, valve.toInt(), tunnels.split(", "))

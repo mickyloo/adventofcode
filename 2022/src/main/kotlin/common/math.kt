@@ -1,6 +1,6 @@
 package common
 
-fun gcd(a: Int, b:Int): Int {
+fun gcd(a: Int, b: Int): Int {
     var i = 1
     var gcd = 1
     while (i <= a && i <= b) {
@@ -10,5 +10,5 @@ fun gcd(a: Int, b:Int): Int {
     return gcd
 }
 
-fun lcm(a: Int, b: Int): Int = (a * b) / gcd(a,b)
+fun lcm(a: Int, b: Int): Int = (a * b) / gcd(a, b)
 

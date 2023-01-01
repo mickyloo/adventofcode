@@ -1,11 +1,10 @@
 package day18
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val cubes = File("src/main/kotlin/day18/input.txt")
-        .readLines()
+    val cubes = readLines("day18/input.txt")
         .map {
             val (x, y, z) = it.split(",")
             Cube(x.toInt(), y.toInt(), z.toInt())
@@ -15,7 +14,7 @@ fun main() {
     println("Part1: $elapsed1 ms")
 
     val elapsed2 = measureTimeMillis { part2(cubes) }
-    println("Part2: $elapsed1 ms")
+    println("Part2: $elapsed2 ms")
 }
 
 
@@ -39,7 +38,7 @@ fun part2(cubes: List<Cube>) {
 
     val exteriors = mutableListOf<Cube>()
     val visited = waterQueue.toMutableSet()
-    while(waterQueue.isNotEmpty()) {
+    while (waterQueue.isNotEmpty()) {
         val current = waterQueue.removeLast()
         val neighbors = current.neighbors().filter {
             it.x in xRange && it.y in yRange && it.z in zRange && it !in visited

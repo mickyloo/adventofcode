@@ -1,11 +1,10 @@
 package day09
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val moves = File("src/main/kotlin/day09/input.txt")
-        .readLines()
+    val moves = readLines("day09/input.txt")
         .map {
             val parts = it.split(" ")
             Direction.valueOf(parts[0]) to parts[1].toInt()

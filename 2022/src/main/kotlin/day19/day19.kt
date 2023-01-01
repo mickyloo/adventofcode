@@ -1,17 +1,16 @@
 package day19
 
+import common.readLines
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import java.io.File
 import kotlin.system.measureTimeMillis
 
 fun main() {
     val re =
         Regex("""Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian.""")
 
-    val blueprints = File("src/main/kotlin/day19/input.txt")
-        .readLines()
+    val blueprints = readLines("day19/input.txt")
         .map {
             val matches = re.matchEntire(it)!!.destructured.toList().map { it.toInt() }
             Blueprint(

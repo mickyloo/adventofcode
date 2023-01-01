@@ -1,7 +1,7 @@
 package day24
 
 import common.Point
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 enum class Direction(val dx: Int, val dy: Int) {
@@ -12,8 +12,7 @@ enum class Direction(val dx: Int, val dy: Int) {
 }
 
 fun main() {
-    val blizzards = File("src/main/kotlin/day24/input.txt")
-        .readLines()
+    val blizzards = readLines("day24/input.txt")
         .drop(1).dropLast(1) // skip first and last row, they are walls
         .flatMapIndexed { y, row ->
             row.drop(1).dropLast(1)

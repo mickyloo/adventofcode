@@ -1,7 +1,7 @@
 package day15
 
+import common.readLines
 import day04.anyOverlap
-import java.io.File
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -10,8 +10,7 @@ import kotlin.system.measureTimeMillis
 fun main() {
     val re = Regex("""Sensor at x=([\-\d]+), y=([\-\d]+): closest beacon is at x=([\-\d]+), y=([\-\d]+)""")
 
-    val sensors = File("src/main/kotlin/day15/input.txt")
-        .readLines()
+    val sensors = readLines("day15/input.txt")
         .map {
             val matches = re.matchEntire(it)!!
             val (sensorX, sensorY, beaconX, beaconY) = matches.destructured

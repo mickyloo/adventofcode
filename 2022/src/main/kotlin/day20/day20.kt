@@ -1,11 +1,10 @@
 package day20
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val numbers = File("src/main/kotlin/day20/input.txt")
-        .readLines()
+    val numbers = readLines("day20/input.txt")
         .map { it.toInt() }
 
     val elapsed1 = measureTimeMillis { solution(numbers) }

@@ -1,11 +1,10 @@
 package day21
 
-import java.io.File
+import common.readLines
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val lines = File("src/main/kotlin/day21/input.txt")
-        .readLines()
+    val lines = readLines("day21/input.txt")
         .associate {
             val (name, expression) = it.split(": ")
             name to expression
@@ -15,7 +14,7 @@ fun main() {
     println("Part1: $elapsed1 ms")
 
     val elapsed2 = measureTimeMillis { part2(lines) }
-    println("Part2: $elapsed1 ms")
+    println("Part2: $elapsed2 ms")
 }
 
 fun part1(lines: Map<String, String>) {
@@ -33,7 +32,7 @@ fun part2(lines: Map<String, String>) {
     val monkey = monkeys[left]!!
     var guess = monkeys["humn"]!!.invoke()
 
-    while(true) {
+    while (true) {
         monkeys["humn"] = { guess }
 
         val current = monkey.invoke()
@@ -47,10 +46,10 @@ fun part2(lines: Map<String, String>) {
         guess = (bounds.first + bounds.last) / 2
     }
 
-    while(monkey.invoke() == goal) {
+    while (monkey.invoke() == goal) {
         monkeys["humn"] = { --guess }
     }
-    println(guess+1)
+    println(guess + 1)
 }
 
 private fun makeMonkeyMap(lines: Map<String, String>): MutableMap<String, () -> Long> {

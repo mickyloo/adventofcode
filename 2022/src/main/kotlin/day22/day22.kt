@@ -2,7 +2,6 @@ package day22
 
 import common.Point
 import common.readParagraphs
-import java.io.File
 import kotlin.system.measureTimeMillis
 
 private const val WALL = "#"
@@ -32,7 +31,7 @@ enum class Direction(val dx: Int, val dy: Int, val value: Int) {
 }
 
 fun main() {
-    val (boardMap, movement) = File("src/main/kotlin/day22/input.txt").readParagraphs()
+    val (boardMap, movement) = readParagraphs("day22/input.txt")
 
     val map = boardMap.lines()
         .mapIndexed { y, line ->
@@ -49,7 +48,7 @@ fun main() {
     println("Part1: $elapsed1 ms")
 
     val elapsed2 = measureTimeMillis { solution(CubeMap(map), movement) }
-    println("Part2: $elapsed1 ms")
+    println("Part2: $elapsed2 ms")
 
 }
 

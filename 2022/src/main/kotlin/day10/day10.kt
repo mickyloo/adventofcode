@@ -1,12 +1,11 @@
 package day10
 
-import java.io.File
+import common.readLines
 import kotlin.math.abs
 import kotlin.system.measureTimeMillis
 
 fun main() {
-    val instructions = File("src/main/kotlin/day10/input.txt")
-        .readLines()
+    val instructions = readLines("day10/input.txt")
         .map { it.split(" ") }
 
     val values = setup(instructions)
