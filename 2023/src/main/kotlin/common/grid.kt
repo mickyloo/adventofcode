@@ -17,3 +17,11 @@ data class Point(val x: Int, val y: Int) {
             Point(x - 1, y - 1),
         )
 }
+
+val NEIGHBORS4 = setOf(
+    1 to 0, -1 to 0, 0 to -1, 0 to 1,
+)
+
+val NEIGHBORS8 = NEIGHBORS4 + setOf(
+    1 to 1, -1 to 1, 1 to -1, -1 to -1
+)
