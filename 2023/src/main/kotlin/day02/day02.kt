@@ -22,7 +22,7 @@ fun main() {
     println("Part2: $elapsed2 ms")
 }
 
-data class Cubes(val red: Int = 0, val blue: Int = 0, val green: Int = 0) {
+private data class Cubes(val red: Int = 0, val blue: Int = 0, val green: Int = 0) {
     fun isValid(): Boolean = red <= 12 && green <= 13 && blue <= 14
     fun power(): Int = red * green * blue
 }
@@ -34,14 +34,14 @@ private fun String.toCubes(): Cubes =
         green = greenRegex.findAll(this).maxOf { it.groupValues[1].toInt() },
     )
 
-fun part1(lines: List<Pair<Int, Cubes>>) {
+private fun part1(lines: List<Pair<Int, Cubes>>) {
     println(lines
         .filter { it.second.isValid() }
         .sumOf { it.first }
     )
 }
 
-fun part2(lines: List<Pair<Int, Cubes>>) {
+private fun part2(lines: List<Pair<Int, Cubes>>) {
     println(lines
         .sumOf { it.second.power() }
     )

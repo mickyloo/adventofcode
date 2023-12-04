@@ -18,9 +18,9 @@ fun main() {
     println("Part2: $elapsed2 ms")
 }
 
-typealias Point = Pair<Int, Int>
+private typealias Point = Pair<Int, Int>
 
-fun part1(grid: Array<CharArray>) {
+private fun part1(grid: Array<CharArray>) {
     var validParts = mutableListOf<Int>()
     for (y in grid.indices) {
         var runningNum = ""
@@ -48,7 +48,7 @@ fun part1(grid: Array<CharArray>) {
     println(validParts.sum());
 }
 
-fun part2(grid: Array<CharArray>) {
+private fun part2(grid: Array<CharArray>) {
     val symbolToNumbers = mutableMapOf<Point, MutableList<Int>>()
     for (y in grid.indices) {
         var runningNum = ""

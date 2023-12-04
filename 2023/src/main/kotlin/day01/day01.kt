@@ -13,7 +13,7 @@ fun main() {
     println("Part2: $elapsed2 ms")
 }
 
-fun part1(lines: List<String>) {
+private fun part1(lines: List<String>) {
     val regex = Regex("""\d""")
     val result = lines.sumOf {
         val digits = regex.findAll(it)
@@ -23,7 +23,7 @@ fun part1(lines: List<String>) {
     println(result)
 }
 
-fun part2(lines: List<String>) {
+private fun part2(lines: List<String>) {
     val regex = Regex("""\d|one|two|three|four|five|six|seven|eight|nine""")
     val result = lines.sumOf {
         val s = it.replace("oneight", "oneeight")
