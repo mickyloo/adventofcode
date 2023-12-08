@@ -10,7 +10,18 @@ fun gcd(a: Int, b: Int): Int {
     return gcd
 }
 
+fun gcd(a: Long, b: Long): Long {
+    var i = 1L
+    var gcd = 1L
+    while (i <= a && i <= b) {
+        if (a % i == 0L && b % i == 0L) gcd = i
+        ++i
+    }
+    return gcd
+}
+
 fun lcm(a: Int, b: Int): Int = (a * b) / gcd(a, b)
+fun lcm(a: Long, b: Long): Long = (a * b) / gcd(a, b)
 
 infix fun LongRange.fullOverlap(other: LongRange): Boolean =
     (this.first >= other.first && this.last <= other.last) || (this.first <= other.first && this.last >= other.last)
