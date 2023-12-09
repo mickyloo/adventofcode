@@ -12,5 +12,5 @@ fun readParagraphs(name: String) = inputFile(name).readText().trimEnd().split("\
 
 fun Any?.println() { println(this) }
 
-val digitsRegex = """(\d)+""".toRegex()
+val digitsRegex = """\-?(\d)+""".toRegex()
 fun String.toNumbers() = digitsRegex.findAll(this).map { it.value.toInt() }.toList()
