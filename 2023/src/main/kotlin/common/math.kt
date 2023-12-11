@@ -27,3 +27,9 @@ infix fun LongRange.fullOverlap(other: LongRange): Boolean =
     (this.first >= other.first && this.last <= other.last) || (this.first <= other.first && this.last >= other.last)
 infix fun LongRange.anyOverlap(other: LongRange): Boolean =
     !(this.last < other.first || this.first > other.last)
+
+fun <T> List<T>.combinations(): Sequence<Pair<T,T>> = sequence {
+    for(i in 0 until this@combinations.size-1)
+        for(j in i+1 until this@combinations.size)
+            yield(this@combinations[i] to this@combinations[j])
+}
