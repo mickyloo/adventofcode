@@ -26,6 +26,9 @@ val NEIGHBORS8 = NEIGHBORS4 + setOf(
     1 to 1, -1 to 1, 1 to -1, -1 to -1
 )
 
-enum class Cardinal {
-    N,W,S,E
+enum class Cardinal(val dy: Int, val dx: Int) {
+    N(-1, 0),
+    W(0, -1),
+    S(1, 0),
+    E(0, 1)
 }

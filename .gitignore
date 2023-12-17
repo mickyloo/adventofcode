@@ -2,6 +2,7 @@
 *.temp
 *.tmp
 output.txt
+input.test.txt
 
 # PYTHON
 # Byte-compiled / optimized / DLL files
