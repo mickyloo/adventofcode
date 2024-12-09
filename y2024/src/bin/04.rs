@@ -38,10 +38,7 @@ fn main() -> Result<()> {
     }
 
     fn part1<R: BufRead>(reader: R) -> Result<i32> {
-        let grid: Vec<Vec<_>> = reader
-            .lines()
-            .map(|line| line.unwrap().chars().collect::<Vec<_>>())
-            .collect();
+        let grid = read_to_2d(reader);
 
         let mut answer = 0;
         let size = grid.len();
@@ -85,10 +82,7 @@ fn main() -> Result<()> {
     println!("\n=== Part 2 ===");
 
     fn part2<R: BufRead>(reader: R) -> Result<usize> {
-        let grid: Vec<Vec<_>> = reader
-            .lines()
-            .map(|line| line.unwrap().chars().collect::<Vec<_>>())
-            .collect();
+        let grid = read_to_2d(reader);
 
         let mut answer = 0;
         let size = grid.len();
