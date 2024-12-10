@@ -13,6 +13,19 @@ pub fn read_to_2d<R: BufRead>(reader: R) -> Vec<Vec<char>> {
     grid
 }
 
+pub fn find(haystack: Vec<Vec<char>>, needle: char) -> (usize, usize) {
+    let rows = haystack.len();
+    let cols = haystack[0].len();
+
+    for i in 0..rows {
+        for j in 0..cols {
+            if haystack[i][j] == needle {
+                return (i, j);
+            }
+        }
+    }
+    panic!("not found");
+}
 
 #[cfg(test)]
 mod tests {
