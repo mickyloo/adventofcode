@@ -48,22 +48,11 @@ fn main() -> Result<()> {
     println!("=== Part 1 ===");
 
     fn parse<R: BufRead>(reader: R) -> (HashMap<String, HashSet<String>>, Vec<Vec<String>>) {
-        let mut lines = reader.lines().peekable();
-        let mut blocks = vec![];
-        while lines.peek().is_some() {
-            let block: Vec<_> = lines
-                .by_ref()
-                .take_while(|l| {
-                    let x = l.as_ref().unwrap();
-                    x.trim().len() > 0
-                })
-                .collect();
-            blocks.push(block);
-        }
+        let blocks = read_to_blocks(reader);
 
         let mut rules_map: HashMap<String, HashSet<String>> = HashMap::new();
         blocks.get(0).unwrap().iter().for_each(|line| {
-            let mut parts = line.as_ref().unwrap().split("|");
+            let mut parts = line.split("|");
             let key = parts.next().unwrap().to_owned();
             rules_map
                 .entry(key)
@@ -77,8 +66,6 @@ fn main() -> Result<()> {
             .iter()
             .map(|line| {
                 let p = line
-                    .as_ref()
-                    .unwrap()
                     .split(",")
                     .map(|x| x.to_owned())
                     .collect::<Vec<_>>();
