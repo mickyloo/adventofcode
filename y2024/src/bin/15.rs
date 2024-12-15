@@ -124,17 +124,34 @@ fn main() -> Result<()> {
     //endregion
 
     //region Part 2
-    // println!("\n=== Part 2 ===");
-    //
-    // fn part2<R: BufRead>(reader: R) -> Result<usize> {
-    //     Ok(0)
-    // }
-    //
-    // assert_eq!(0, part2(BufReader::new(TEST.as_bytes()))?);
-    //
-    // let input_file = BufReader::new(File::open(INPUT_FILE)?);
-    // let result = time_snippet!(part2(input_file)?);
-    // println!("Result = {}", result);
+    println!("\n=== Part 2 ===");
+
+    fn part2<R: BufRead>(reader: R) -> Result<usize> {
+        let blocks = read_to_blocks(reader);
+        let instructions = blocks[1].join("").chars().collect::<Vec<char>>();
+        let mut grid: Vec<Vec<char>> = blocks[0].iter().map(|s| {
+            let row = s.chars().map(|c| {
+                match c {
+                    '#' => vec!['#','#'],
+                    'O' => vec!['[',']'],
+                    '@' => vec!['@','.'],
+                    _ => vec!['.', '.']
+                }
+            }).collect_vec();
+
+            row.into_iter().flatten().collect_vec()
+        }).collect_vec();
+       
+        print(&grid);
+
+        Ok(0)
+    }
+
+    assert_eq!(0, part2(BufReader::new(TEST.as_bytes()))?);
+
+    let input_file = BufReader::new(File::open(INPUT_FILE)?);
+    let result = time_snippet!(part2(input_file)?);
+    println!("Result = {}", result);
     //endregion
 
     Ok(())
