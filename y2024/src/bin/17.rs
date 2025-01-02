@@ -1,10 +1,10 @@
+use std::fs::File;
 use adv_code_2024::*;
 use anyhow::*;
-use code_timing_macros::time_snippet;
 use const_format::concatcp;
 use itertools::Itertools;
-use std::fs::File;
 use std::io::{BufRead, BufReader};
+use code_timing_macros::time_snippet;
 
 const DAY: &str = "17"; // TODO: Fill the day
 const INPUT_FILE: &str = concatcp!("input/", DAY, ".txt");
@@ -16,6 +16,14 @@ Register C: 0
 
 Program: 0,1,5,4,3,0";
 
+const TEST2: &str  = "\
+Register A: 117440
+Register B: 0
+Register C: 0
+
+Program: 0,3,5,4,3,0";
+
+#[derive(Eq, Hash, PartialEq, Clone, Debug)]
 struct CPU {
     a: usize,
     b: usize,
@@ -47,11 +55,8 @@ fn main() -> Result<()> {
             .collect_vec();
         (cpu, program)
     }
-
-    fn part1<R: BufRead>(reader: R) -> Result<String> {
-        let (mut cpu, program) = parse(reader);
+    fn run(cpu: &mut CPU, program: Vec<usize>) -> Vec<usize> {
         let mut pointer = 0_usize;
-
         let mut output = vec![];
 
         while pointer < program.len() {
@@ -85,12 +90,16 @@ fn main() -> Result<()> {
                 pointer += 2;
             }
         }
+        output
+    }
 
+    fn part1<R: BufRead>(reader: R) -> Result<String> {
+        let (mut cpu, program) = parse(reader);
+        let output = run(&mut cpu, program);
         let answer = output.iter().map(|x| x.to_string()).join(",");
         Ok(answer)
     }
 
-    // TODO: Set the expected answer for the test input
     assert_eq!(
         "4,6,3,5,6,3,5,2,1,0",
         part1(BufReader::new(TEST.as_bytes()))?
@@ -99,16 +108,41 @@ fn main() -> Result<()> {
     let input_file = BufReader::new(File::open(INPUT_FILE)?);
     let result = time_snippet!(part1(input_file)?);
     println!("Result = {}", result);
-    //endregion
+    // endregion
 
     //region Part 2
     // println!("\n=== Part 2 ===");
     //
-    // fn part2<R: BufRead>(reader: R) -> Result<usize> {
-    //     Ok(0)
+    // fn run2(input: usize, program: Vec<usize>) -> usize {
+    //     let mut check = CPU{a: input, b:0, c:0};
+    //     let mut output = run(&mut check, program.clone());
+    //     output.reverse();
+    //     let output_octal = usize::from_str_radix(&output.into_iter().join(""), 8).unwrap();
+    //     output_octal
     // }
     //
-    // assert_eq!(0, part2(BufReader::new(TEST.as_bytes()))?);
+    // fn part2<R: BufRead>(reader: R) -> Result<usize> {
+    //     let (cpu, program) = parse(reader);
+    //     let mut program_reverse = program.clone();
+    //     program_reverse.reverse();
+    //     let program_octal = usize::from_str_radix(&program_reverse.into_iter().join(""), 8).unwrap();
+    //
+    //     let mut out = run2(cpu.a, program.clone());
+    //     while out != program_octal {
+    //         if out < program_octal {
+    //             println!("Out < Program.  program={}, out={}", program_octal, out);
+    //             out = run2(out * 2, program.clone());
+    //         } else if out > program_octal {
+    //             println!("Out > Program.  program={}, out={}", program_octal, out);
+    //             out = run2((out/2), program.clone());
+    //         }
+    //     }
+    //
+    //     let answer=0;
+    //     Ok(answer)
+    // }
+    //
+    // assert_eq!(0, part2(BufReader::new(TEST2.as_bytes()))?);
     //
     // let input_file = BufReader::new(File::open(INPUT_FILE)?);
     // let result = time_snippet!(part2(input_file)?);
