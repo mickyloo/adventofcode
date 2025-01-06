@@ -112,7 +112,7 @@ fn main() -> Result<()> {
             .map(|s| s.chars().collect_vec())
             .collect_vec();
 
-        let mut curr = find(grid.clone(), '@');
+        let mut curr = find(&grid, '@');
 
         for i in 0..instructions.len() {
             let cmd = instructions[i];
@@ -178,7 +178,7 @@ fn main() -> Result<()> {
             })
             .collect_vec();
 
-        let mut curr = find(grid.clone(), '@');
+        let mut curr = find(&grid, '@');
 
         for i in 0..instructions.len() {
             let cmd = instructions[i];

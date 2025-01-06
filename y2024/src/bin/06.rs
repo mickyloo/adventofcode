@@ -35,7 +35,7 @@ fn main() -> Result<()> {
 
     fn part1<R: BufRead>(reader: R) -> Result<usize> {
         let grid = read_to_2d(reader);
-        let start = find(grid.clone(), '^');
+        let start = find(&grid, '^');
         let visited = patrol(start, grid);
         let answer = visited.len();
         Ok(answer)
@@ -89,7 +89,7 @@ fn main() -> Result<()> {
 
     fn part2<R: BufRead>(reader: R) -> Result<usize> {
         let _grid = read_to_2d(reader);
-        let start = find(_grid.clone(), '^');
+        let start = find(&_grid, '^');
         let mut add_obstacles = patrol(start, _grid.clone());
         add_obstacles.remove(&(start.0 as i32, start.1 as i32));
 

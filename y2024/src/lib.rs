@@ -30,7 +30,7 @@ pub fn read_to_blocks<R: BufRead>(reader: R) -> Vec<Vec<String>> {
     blocks
 }
 
-pub fn find(haystack: Vec<Vec<char>>, needle: char) -> (usize, usize) {
+pub fn find(haystack: &Vec<Vec<char>>, needle: char) -> (usize, usize) {
     let rows = haystack.len();
     let cols = haystack[0].len();
 
