@@ -11,3 +11,4 @@ My solutions for adventofcode
 | [2021](https://adventofcode.com/2021)  | Kotlin 1.6  | 42 |
 | [2022](https://adventofcode.com/2022)  | Kotlin 1.7  | 50 |
 | [2023](https://adventofcode.com/2023)  | Kotlin 1.9  | 28 |
+| [2024](https://adventofcode.com/2024)  | Rust 1.81.0 | 38 |
