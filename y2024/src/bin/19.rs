@@ -30,7 +30,7 @@ fn main() -> Result<()> {
 
     fn part1<R: BufRead>(reader: R) -> Result<usize> {
         let lines = reader.lines().map(Result::unwrap).collect_vec();
-        let patterns = lines[0].clone().replace(", ", "|");
+        let patterns = lines[0].replace(", ", "|");
         let re_string = format!("^({})+$", patterns);
         let regex = Regex::new(re_string.as_str())?;
 

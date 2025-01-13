@@ -1,11 +1,11 @@
-use std::collections::HashMap;
+use adv_code_2024::*;
 use anyhow::*;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
 use code_timing_macros::time_snippet;
 use const_format::concatcp;
 use itertools::Itertools;
-use adv_code_2024::*;
+use std::collections::HashMap;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 
 const DAY: &str = "21"; // TODO: Fill the day
 const INPUT_FILE: &str = concatcp!("input/", DAY, ".txt");
@@ -20,7 +20,7 @@ const TEST: &str = "\
 fn main() -> Result<()> {
     start_day(DAY);
 
-    let mut lookup : HashMap<(char, char), String> = HashMap::new();
+    let mut lookup: HashMap<(char, char), String> = HashMap::new();
     lookup.insert(('A', '0'), "<A".to_string());
     lookup.insert(('A', '3'), "^A".to_string());
     lookup.insert(('A', '6'), "^^A".to_string());
@@ -88,28 +88,30 @@ fn main() -> Result<()> {
     //region Part 1
     println!("=== Part 1 ===");
 
-    fn run(input: String, lookup: HashMap<(char, char), String>) -> String {
+    fn run(input: &String, lookup: &HashMap<(char, char), String>) -> String {
         let mut result = input;
         for _ in 0..3 {
             let line = "A".to_owned() + result.as_str();
-            result = line.chars()
+            result = &line
+                .chars()
                 .tuple_windows()
-                .map(|(left,right) | {
-                    &lookup[&(left,right)]
-                }).join("")
+                .map(|(left, right)| &lookup[&(left, right)])
+                .join("")
         }
-        result
+        result.to_string()
     }
 
     fn part1<R: BufRead>(reader: R, lookup: HashMap<(char, char), String>) -> Result<usize> {
         let lines = reader.lines();
-        let answer = lines.map(|line| {
-            let line = line.unwrap();
-            let seq = run(line.clone(), lookup.clone());
-            let num = line[0..3].to_string().parse::<usize>().unwrap();
-            println!("{} {} {}", seq.len(), num, seq);
-            num * seq.len()
-        }).sum();
+        let answer = lines
+            .map(|line| {
+                let line = line.unwrap();
+                let seq = run(&line, &lookup);
+                let num = line[0..3].to_string().parse::<usize>().unwrap();
+                println!("{} {} {}", seq.len(), num, seq);
+                num * seq.len()
+            })
+            .sum();
 
         Ok(answer)
     }
@@ -138,4 +140,3 @@ fn main() -> Result<()> {
 
     Ok(())
 }
-

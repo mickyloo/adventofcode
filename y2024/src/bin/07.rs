@@ -52,7 +52,7 @@ fn main() -> Result<()> {
         equations
     }
 
-    fn valid_add_mul(equation: Equation) -> bool {
+    fn valid_add_mul(equation: &Equation) -> bool {
         let op_combinations =
             repeat_n(vec!['+', '*'], equation.inputs.len() - 1).multi_cartesian_product();
         for combo in op_combinations {
@@ -76,7 +76,7 @@ fn main() -> Result<()> {
         false
     }
 
-    fn valid_add_mul_concat(equation: Equation) -> bool {
+    fn valid_add_mul_concat(equation: &Equation) -> bool {
         let op_combinations =
             repeat_n(vec!['+', '*', '|'], equation.inputs.len() - 1).multi_cartesian_product();
         for combo in op_combinations {
@@ -108,7 +108,7 @@ fn main() -> Result<()> {
 
         let mut answer: usize = 0;
         for equation in equations {
-            let is_valid = valid_add_mul(equation.clone());
+            let is_valid = valid_add_mul(&equation);
             if is_valid {
                 answer += equation.total;
             }
@@ -132,7 +132,7 @@ fn main() -> Result<()> {
 
         let mut answer: usize = 0;
         for equation in equations {
-            if valid_add_mul(equation.clone()) || valid_add_mul_concat(equation.clone()) {
+            if valid_add_mul(&equation) || valid_add_mul_concat(&equation) {
                 answer += equation.total;
             }
         }

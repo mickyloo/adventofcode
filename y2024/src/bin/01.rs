@@ -1,10 +1,10 @@
-use std::collections::HashMap;
+use adv_code_2024::*;
 use anyhow::*;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
 use code_timing_macros::time_snippet;
 use const_format::concatcp;
-use adv_code_2024::*;
+use std::collections::HashMap;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 
 const DAY: &str = "01";
 const INPUT_FILE: &str = concatcp!("input/", DAY, ".txt");
@@ -24,12 +24,15 @@ fn main() -> Result<()> {
     //region Part 1
     println!("\n=== Part 1 ===");
     fn part1<R: BufRead>(reader: R) -> Result<i32> {
-
-        let (mut l1, mut l2): (Vec<i32>, Vec<i32>) = reader.lines()
+        let (mut l1, mut l2): (Vec<i32>, Vec<i32>) = reader
+            .lines()
             .map(|line| {
                 let binding = line.unwrap();
                 let mut parts = binding.split_whitespace();
-                (parts.next().unwrap().parse::<i32>().unwrap(), parts.next().unwrap().parse::<i32>().unwrap())
+                (
+                    parts.next().unwrap().parse::<i32>().unwrap(),
+                    parts.next().unwrap().parse::<i32>().unwrap(),
+                )
             })
             .unzip();
 
@@ -57,17 +60,16 @@ fn main() -> Result<()> {
     fn part2<R: BufRead>(reader: R) -> Result<i32> {
         let mut l1: Vec<i32> = Vec::new();
         let mut counter: HashMap<i32, i32> = HashMap::new();
-        reader.lines().flatten()
-            .for_each(|line| {
-                let mut cols = line.split_whitespace();
-                l1.push(cols.next().unwrap().parse::<i32>().unwrap());
-                let entry = counter.entry(cols.next().unwrap().parse::<i32>().unwrap()).or_insert(0);
-                *entry += 1;
-            });
+        reader.lines().flatten().for_each(|line| {
+            let mut cols = line.split_whitespace();
+            l1.push(cols.next().unwrap().parse::<i32>().unwrap());
+            let entry = counter
+                .entry(cols.next().unwrap().parse::<i32>().unwrap())
+                .or_insert(0);
+            *entry += 1;
+        });
 
-        let answer: i32 = l1.iter().map(|x| {
-            x * counter.get(x).unwrap_or(&0)
-        }).sum();
+        let answer: i32 = l1.iter().map(|x| x * counter.get(x).unwrap_or(&0)).sum();
         Ok(answer)
     }
     //

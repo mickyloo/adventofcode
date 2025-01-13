@@ -37,8 +37,8 @@ fn main() -> Result<()> {
 
         let secrets = numbers
             .iter()
-            .map(|x| {
-                let mut num = x.clone();
+            .map(|&x| {
+                let mut num = x;
                 for _ in 0..2000 {
                     num = secret(num);
                 }

@@ -65,10 +65,7 @@ fn main() -> Result<()> {
             .unwrap()
             .iter()
             .map(|line| {
-                let p = line
-                    .split(",")
-                    .map(|x| x.to_owned())
-                    .collect::<Vec<_>>();
+                let p = line.split(",").map(|x| x.to_owned()).collect::<Vec<_>>();
                 p
             })
             .collect();

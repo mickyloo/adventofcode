@@ -30,7 +30,7 @@ fn main() -> Result<()> {
     //region Part 1
     println!("=== Part 1 ===");
 
-    fn parse_satellites(grid: Vec<Vec<char>>) -> HashMap<char, Vec<(i32, i32)>> {
+    fn parse_satellites(grid: &Vec<Vec<char>>) -> HashMap<char, Vec<(i32, i32)>> {
         let size = grid.len();
         let mut satellites: HashMap<char, Vec<(i32, i32)>> = HashMap::new();
         for i in 0..size {
@@ -50,13 +50,13 @@ fn main() -> Result<()> {
 
     fn part1<R: BufRead>(reader: R) -> Result<usize> {
         let grid = read_to_2d(reader);
-        let satellites = parse_satellites(grid.clone());
+        let satellites = parse_satellites(&grid);
 
         let mut antinodes: HashSet<(i32, i32)> = HashSet::new();
         let size = grid.len() as i32;
         for group in satellites.values() {
             for pair in group.iter().combinations(2) {
-                let nodes = find_antinodes(pair, size, 1);
+                let nodes = find_antinodes(&pair, size, 1);
                 antinodes.extend(nodes);
             }
         }
@@ -65,7 +65,7 @@ fn main() -> Result<()> {
         Ok(answer)
     }
 
-    fn find_antinodes(pair: Vec<&(i32, i32)>, size: i32, limit: usize) -> Vec<(i32, i32)> {
+    fn find_antinodes(pair: &Vec<&(i32, i32)>, size: i32, limit: usize) -> Vec<(i32, i32)> {
         let mut nodes: Vec<(i32, i32)> = Vec::new();
 
         let delta_y = pair[1].1 - pair[0].1;
@@ -104,13 +104,13 @@ fn main() -> Result<()> {
 
     fn part2<R: BufRead>(reader: R) -> Result<usize> {
         let grid = read_to_2d(reader);
-        let satellites = parse_satellites(grid.clone());
+        let satellites = parse_satellites(&grid);
 
         let mut antinodes: HashSet<(i32, i32)> = HashSet::new();
         let size = grid.len() as i32;
         for group in satellites.values() {
             for pair in group.iter().combinations(2) {
-                let nodes = find_antinodes(pair.clone(), size, size as usize);
+                let nodes = find_antinodes(&pair, size, size as usize);
                 antinodes.extend(nodes);
                 antinodes.insert((pair[0].0, pair[0].1));
                 antinodes.insert((pair[1].0, pair[1].1));

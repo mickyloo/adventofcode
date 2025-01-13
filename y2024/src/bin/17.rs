@@ -1,10 +1,10 @@
-use std::fs::File;
 use adv_code_2024::*;
 use anyhow::*;
+use code_timing_macros::time_snippet;
 use const_format::concatcp;
 use itertools::Itertools;
+use std::fs::File;
 use std::io::{BufRead, BufReader};
-use code_timing_macros::time_snippet;
 
 const DAY: &str = "17"; // TODO: Fill the day
 const INPUT_FILE: &str = concatcp!("input/", DAY, ".txt");
@@ -16,7 +16,7 @@ Register C: 0
 
 Program: 0,1,5,4,3,0";
 
-const TEST2: &str  = "\
+const TEST2: &str = "\
 Register A: 117440
 Register B: 0
 Register C: 0

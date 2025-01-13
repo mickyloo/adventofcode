@@ -54,7 +54,8 @@ fn main() -> Result<()> {
     fn part1<R: BufRead>(mut reader: R) -> Result<usize> {
         let networks = networks(&mut reader);
 
-        let answer = networks.into_iter()
+        let answer = networks
+            .into_iter()
             .filter(|combo| {
                 combo[0].starts_with("t") || combo[1].starts_with("t") || combo[2].starts_with("t")
             })

@@ -19,7 +19,7 @@ fn main() -> Result<()> {
     //region Part 1
     println!("=== Part 1 ===");
 
-    fn blink(numbers: Vec<usize>) -> Vec<Vec<usize>> {
+    fn blink(numbers: &Vec<usize>) -> Vec<Vec<usize>> {
         let mut new = vec![];
         numbers.iter().for_each(|x: &usize| {
             if *x == 0 {
@@ -50,7 +50,7 @@ fn main() -> Result<()> {
             .collect_vec();
 
         for _ in 0..25 {
-            numbers = blink(numbers).iter().flatten().cloned().collect_vec();
+            numbers = blink(&numbers).iter().flatten().cloned().collect_vec();
         }
 
         let answer = numbers.len();
@@ -79,7 +79,7 @@ fn main() -> Result<()> {
 
         for _ in 0..75 {
             let keys = numbers.keys().copied().collect_vec();
-            let new = blink(keys.clone());
+            let new = blink(&keys);
             let mut new_numbers: HashMap<usize, usize> = HashMap::new();
             for (k, new) in zip(keys, new) {
                 let mult = numbers[&k];

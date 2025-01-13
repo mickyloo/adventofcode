@@ -56,7 +56,6 @@ const TEST3: &str = "\
 
 <<<<<<<";
 
-
 fn main() -> Result<()> {
     start_day(DAY);
 
@@ -143,7 +142,11 @@ fn main() -> Result<()> {
     //region Part 2
     println!("\n=== Part 2 ===");
 
-    fn push_heavy_vertical(grid: &mut Vec<Vec<char>>, cell: (usize, usize), dir: char) -> (usize, usize) {
+    fn push_heavy_vertical(
+        grid: &mut Vec<Vec<char>>,
+        cell: (usize, usize),
+        dir: char,
+    ) -> (usize, usize) {
         let delta: (i32, i32) = match dir {
             '^' => (-1, 0),
             'v' => (1, 0),

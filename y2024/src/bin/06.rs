@@ -1,10 +1,10 @@
-use std::collections::HashSet;
+use adv_code_2024::*;
 use anyhow::*;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
 use code_timing_macros::time_snippet;
 use const_format::concatcp;
-use adv_code_2024::*;
+use std::collections::HashSet;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 
 const DAY: &str = "06";
 const INPUT_FILE: &str = concatcp!("input/", DAY, ".txt");
@@ -23,9 +23,11 @@ const TEST: &str = "\
 
 #[derive(Eq, Hash, PartialEq, Clone)]
 enum DIR {
-    LEFT, RIGHT, UP, DOWN
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN,
 }
-
 
 fn main() -> Result<()> {
     start_day(DAY);
@@ -52,11 +54,15 @@ fn main() -> Result<()> {
                 DIR::UP => (curr.0 - 1, curr.1),
                 DIR::LEFT => (curr.0, curr.1 - 1),
                 DIR::RIGHT => (curr.0, curr.1 + 1),
-                DIR::DOWN => (curr.0 + 1, curr.1)
+                DIR::DOWN => (curr.0 + 1, curr.1),
             };
 
             // break if OOB
-            if new_curr.0 < 0 || new_curr.0 >= grid.len() as i32 || new_curr.1 < 0 || new_curr.1 >= grid[0].len() as i32 {
+            if new_curr.0 < 0
+                || new_curr.0 >= grid.len() as i32
+                || new_curr.1 < 0
+                || new_curr.1 >= grid[0].len() as i32
+            {
                 break;
             }
 
@@ -67,7 +73,7 @@ fn main() -> Result<()> {
                     DIR::UP => DIR::RIGHT,
                     DIR::LEFT => DIR::UP,
                     DIR::RIGHT => DIR::DOWN,
-                    DIR::DOWN => DIR::LEFT
+                    DIR::DOWN => DIR::LEFT,
                 };
             } else {
                 curr = new_curr;
@@ -113,7 +119,11 @@ fn main() -> Result<()> {
                 };
 
                 // break if OOB
-                if new_curr.0 < 0 || new_curr.0 >= grid.len() as i32 || new_curr.1 < 0 || new_curr.1 >= grid[0].len() as i32 {
+                if new_curr.0 < 0
+                    || new_curr.0 >= grid.len() as i32
+                    || new_curr.1 < 0
+                    || new_curr.1 >= grid[0].len() as i32
+                {
                     break;
                 }
                 if visited.contains(&new_curr) {
@@ -128,7 +138,7 @@ fn main() -> Result<()> {
                         DIR::UP => DIR::RIGHT,
                         DIR::LEFT => DIR::UP,
                         DIR::RIGHT => DIR::DOWN,
-                        DIR::DOWN => DIR::LEFT
+                        DIR::DOWN => DIR::LEFT,
                     };
                     curr = (curr.0, curr.1, direction.clone());
                 } else {
