@@ -69,7 +69,7 @@ private class Grid {
         this.grid = grid.toMutableList()
         this.bounds = 0 until grid.size
     }
-    
+
     fun contains(p: Point, value: Char): Boolean {
         if (p.y !in bounds || p.x !in bounds) {
             return false
