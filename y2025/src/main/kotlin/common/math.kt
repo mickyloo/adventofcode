@@ -43,3 +43,10 @@ fun <T> List<T>.combinations(): Sequence<Pair<T,T>> = sequence {
         for(j in i+1 until this@combinations.size)
             yield(this@combinations[i] to this@combinations[j])
 }
+
+fun <T> Collection<T>.powerset(): Set<Set<T>> =
+    powerset(this, setOf(emptySet()))
+
+private tailrec fun <T> powerset(left: Collection<T>, acc: Set<Set<T>>): Set<Set<T>> =
+    if (left.isEmpty()) acc
+    else powerset(left.drop(1), acc + acc.map { it + left.first() })
