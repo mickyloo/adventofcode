@@ -10,6 +10,9 @@ repositories {
 }
 
 dependencies {
+    // z3
+    implementation("tools.aqua:z3-turnkey:4.14.1")
+
     testImplementation(kotlin("test"))
 }
 
