@@ -55,48 +55,38 @@ private fun part1(lines: List<String>) {
 private fun part2(lines: List<String>) {
 
     fun solve(goal: List<Int>, switches: List<List<Int>>): Int {
-        val vars = switches.indices.joinToString("\r\n") {
-            """
-(declare-const x$it Int)
-(assert (>= x$it 0))
-""".trimIndent()
-        }
-
-        val totalString =
-            """
-(declare-const total Int)
-(assert (= (+ ${switches.indices.joinToString(" ") { "x$it" }}) total))
-""".trimIndent()
-
-        val constraints = goal.mapIndexed { index, g ->
-            val xvars = switches
-                .mapIndexed { i, switch -> if (switch.contains(index)) "x$i" else "" }
-                .filter { it != "" }
-                .joinToString(" ")
-
-            "(assert (= (+ $xvars) $g))"
-        }.joinToString("\r\n")
-
-        val formula =
-            """
-$vars
-$totalString
-$constraints
-
-""".trimIndent()
-
         val ctx = Context()
-        val opt = ctx.mkOptimize()
-        val total = ctx.mkIntConst("total")
-        val assertions = ctx.parseSMTLIB2String(formula, null, null, null, null)
-        for (assertion in assertions) {
-            opt.Assert(assertion)
-        }
-        opt.MkMinimize(total)
-        opt.Check()
-        return (opt.model.getConstInterp(total) as IntNum).int
-    }
+        ctx.use { ctx ->
+            val opt = ctx.mkOptimize()
 
+            val xVars = switches.indices.map { i ->
+                val x = ctx.mkIntConst("x$i")
+                opt.Assert(ctx.mkGe(x, ctx.mkInt(0)))
+                x
+            }
+
+            goal.forEachIndexed { index, targetVal ->
+                val terms = switches.withIndex()
+                    .filter { it.value.contains(index) }
+                    .map { xVars[it.index] }
+                    .toTypedArray()
+
+                val sum = if (terms.isNotEmpty()) ctx.mkAdd(*terms) else ctx.mkInt(0)
+                opt.Assert(ctx.mkEq(sum, ctx.mkInt(targetVal)))
+            }
+
+            val total = ctx.mkIntConst("total")
+            val totalSum = if (xVars.isNotEmpty()) ctx.mkAdd(*xVars.toTypedArray()) else ctx.mkInt(0)
+            opt.Assert(ctx.mkEq(total, totalSum))
+
+            opt.MkMinimize(total)
+
+            if (opt.Check() == com.microsoft.z3.Status.SATISFIABLE) {
+                return (opt.model.getConstInterp(total) as IntNum).int
+            }
+            throw RuntimeException("Unsatisfiable")
+        }
+    }
 
     val manuals: List<Pair<List<Int>, List<List<Int>>>> = lines.map {
         val parts = it.split(" ")
